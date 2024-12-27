@@ -12,11 +12,11 @@ func host_only():
 	host()
 
 func host():
-	var host = _parse_input()
-	if host.size() == 0:
+	var host_dict = _parse_input()
+	if host_dict.size() == 0:
 		return ERR_CANT_RESOLVE
 
-	var port = host.port
+	var port = host_dict.port
 
 	# Start host
 	print("Starting host on port %s" % port)
@@ -49,12 +49,12 @@ func host():
 	NetworkTime.start()
 
 func join():
-	var host = _parse_input()
-	if host.size() == 0:
+	var host_dict = _parse_input()
+	if host_dict.size() == 0:
 		return ERR_CANT_RESOLVE
 		
-	var address = host.address
-	var port = host.port
+	var address = host_dict.address
+	var port = host_dict.port
 
 	# Connect
 	print("Connecting to %s:%s" % [address, port])

@@ -22,9 +22,9 @@ func connect_to_noray():
 	var address = noray_address_input.text
 	if address.contains(":"):
 		var parts = address.split(":")
-		var host = parts[0]
+		var noray_host = parts[0]
 		var port = (parts[1] as String).to_int()
-		err = await Noray.connect_to_host(host, port)
+		err = await Noray.connect_to_host(noray_host, port)
 	else:
 		err = await Noray.connect_to_host(address)
 	
