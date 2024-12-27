@@ -1,0 +1,9 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=3 uid="uid://dtx44ygsdccy5"]
+
+[ext_resource type="Material" uid="uid://b8gyoty3phwx5" path="res://Drone/personal_laser_green_emission.tres" id="1_h61j8"]
+
+[resource]
+material = ExtResource("1_h61j8")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 6.15

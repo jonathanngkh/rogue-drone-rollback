@@ -1,0 +1,9 @@
+[gd_resource type="Sky" load_steps=3 format=3 uid="uid://b5d0f7g6xkjqy"]
+
+[ext_resource type="Texture2D" uid="uid://dqmnnpw22w052" path="res://Assets/AllSkyFree_Sky_ColdSunset_Equirect.png" id="1_3yc6q"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3g06i"]
+panorama = ExtResource("1_3yc6q")
+
+[resource]
+sky_material = SubResource("PanoramaSkyMaterial_3g06i")

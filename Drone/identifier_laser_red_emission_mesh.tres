@@ -1,0 +1,14 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=3 uid="uid://dp82fq0v60h26"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jevdr"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
+
+[resource]
+material = SubResource("StandardMaterial3D_jevdr")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 5000.0

@@ -58,8 +58,9 @@ func _handle_stop():
 		avatar.queue_free()
 	avatars.clear()
 
-func _spawn(id: int) -> BrawlerController:
-	var avatar = player_scene.instantiate() as BrawlerController
+func _spawn(id: int) -> DroneController:
+	var avatar = player_scene.instantiate()
+	#var avatar = player_scene.instantiate() as BrawlerController
 	avatars[id] = avatar
 	avatar.name += " #%d" % id
 	avatar.player_id = id
