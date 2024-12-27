@@ -94,10 +94,11 @@ offset_right = 125.5
 offset_bottom = 105.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 use_hidden_tabs_for_min_size = true
 
 [node name="Settings" type="VBoxContainer" parent="UI/Network Popup"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 metadata/_tab_index = 0
@@ -168,7 +169,6 @@ value = 100.0
 script = ExtResource("16_6pky3")
 
 [node name="LAN" type="VBoxContainer" parent="UI/Network Popup"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
