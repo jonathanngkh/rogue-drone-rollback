@@ -2,12 +2,13 @@ extends CharacterBody3D
 class_name DroneController
 
 var player_id: int = -1
-var player_name: String = "":
+@export var player_name: String = "":
 	set(p_name):
 		if p_name.length() > 24:
 			p_name = p_name.substr(0, 21) + "..."
 		player_name = p_name
 		nametag.text = p_name
+@onready var input: DroneInput = $Input
 @onready var nametag: Label3D = $Nametag
 @onready var drone_animation_player: AnimationPlayer = $"Pivot/drone edited origins/DroneAnimationPlayer"
 @onready var bullet_scene: PackedScene = preload("res://Bullet/bullet.tscn") # Bullet scene
@@ -77,96 +78,90 @@ func _ready() -> void:
 		
 		
 
-
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	$HUD/FPS.text = "FPS: " + str(Engine.get_frames_per_second())
-	#if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id() or owner.name != "MainNetworking":
-	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
-		if Input.is_action_just_pressed("debug"):
-			print('device index: %s' % device_index)
-			print("muid: " + str(multiplayer.get_unique_id()))
-			print("name: " + name)
-			print("msync mu auth: " + str($MultiplayerSynchronizer.get_multiplayer_authority()))
-			print('youdied owner: ' + you_died_overlay.owner.name)
-		# Handle ADS
-		#if device_index == 0:
-		# Get throttle input (left stick Y-axis)
-		var throttle_input = Input.get_action_strength("throttle_forward" + string_p2)
-		# Get pitch input (right stick Y-axis)
-		var pitch_input = Input.get_action_strength("pitch_backward" + string_p2) - Input.get_action_strength("pitch_forward" + string_p2)
-		# Get roll input (right stick X-axis)
-		var roll_input = Input.get_action_strength("roll_left" + string_p2) - Input.get_action_strength("roll_right" + string_p2)
-		# Get yaw input (left stick X-axis)
-		var yaw_input = Input.get_action_strength("yaw_left" + string_p2) - Input.get_action_strength("yaw_right" + string_p2)
+	if Input.is_action_just_pressed("debug"):
+		print('device index: %s' % device_index)
+		print("muid: " + str(multiplayer.get_unique_id()))
+		print("name: " + name)
+		print("msync mu auth: " + str($MultiplayerSynchronizer.get_multiplayer_authority()))
+		print('youdied owner: ' + you_died_overlay.owner.name)
 		
-		if Input.is_action_pressed("aim_down_sights" + string_p2): # Check if L1 is held
-			fpv_camera.fov = lerp(fpv_camera.fov, zoom_fov, zoom_speed * delta)
-		else:
-			fpv_camera.fov = lerp(fpv_camera.fov, default_fov, zoom_speed * delta)
-		
-		if Input.is_action_just_pressed("aim_down_sights" + string_p2):
-			max_pitch_speed *= zoom_sensitivity_multiplier
-			max_roll_speed *= zoom_sensitivity_multiplier
-			max_yaw_speed *= zoom_sensitivity_multiplier
-			
-		if Input.is_action_just_released("aim_down_sights" + string_p2):
-			max_pitch_speed *= 1/zoom_sensitivity_multiplier
-			max_roll_speed *= 1/zoom_sensitivity_multiplier
-			max_yaw_speed *= 1/zoom_sensitivity_multiplier
-			
-		if Input.is_action_just_pressed("shoot" + string_p2):
-			laser_sound.play()
-			laser_hum_sound.play()
-			
-		if Input.is_action_pressed("shoot" + string_p2):
-			#shoot_bullet()
-			shoot_laser()
-			laser.get_active_material(0).albedo_color.a = 1.0
-			identifier_laser.get_active_material(0).albedo_color.a = 1.0
+	if Input.is_action_pressed("aim_down_sights" + string_p2):
+		fpv_camera.fov = lerp(fpv_camera.fov, zoom_fov, zoom_speed * delta)
+	else:
+		fpv_camera.fov = lerp(fpv_camera.fov, default_fov, zoom_speed * delta)
 
-		if Input.is_action_just_released("shoot" + string_p2):
-			laser_sound.stop()
-			laser_hum_sound.stop()
-			var laser_material = laser.get_active_material(0)
-			var tween = create_tween()
-			tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-			var identifier_laser_material = identifier_laser.get_active_material(0)
-			var tween2 = create_tween()
-			tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-
-		# Add the gravity.
-		if not is_on_floor():
-			velocity += get_gravity() * delta
-		else:
-			apply_friction(delta)
-			reset_orientation_to_neutral() # can use this for ez hover
-		
-		# Apply thrust
-		apply_thrust(throttle_input, delta)
-		
-		# Apply angular drag to reduce angular velocities
-		apply_angular_drag(delta)
-		
-		# Apply yaw
-		apply_yaw(yaw_input, delta)
-
-		# Apply roll
-		apply_roll(roll_input, delta)
-		
-		# Apply pitch
-		apply_pitch(pitch_input, delta)
-		
+	# Start zoom
+	if Input.is_action_just_pressed("aim_down_sights"):
+		max_pitch_speed *= zoom_sensitivity_multiplier
+		max_roll_speed *= zoom_sensitivity_multiplier
+		max_yaw_speed *= zoom_sensitivity_multiplier
+	# End zoom
+	if Input.is_action_just_released("aim_down_sights"):
+		max_pitch_speed *= 1/zoom_sensitivity_multiplier
+		max_roll_speed *= 1/zoom_sensitivity_multiplier
+		max_yaw_speed *= 1/zoom_sensitivity_multiplier
 		# Adjust engine sound based on throttle input
-		update_engine_sound(throttle_input, yaw_input, pitch_input, roll_input)
+	update_engine_sound(input.throttle_input, input.yaw_input, input.pitch_input, input.roll_input)
+	
+	# Play animation
+	drone_animation_player.play("throttle_forward")
+	drone_animation_player.speed_scale = 2 + input.throttle_input * 3
+	# add yaw,pitch,roll animations also
+
+	if Input.is_action_just_pressed("shoot" + string_p2):
+		laser_sound.play()
+		laser_hum_sound.play()
 		
+	if Input.is_action_pressed("shoot" + string_p2):
+		#shoot_bullet()
+		shoot_laser()
+		laser.get_active_material(0).albedo_color.a = 1.0
+		identifier_laser.get_active_material(0).albedo_color.a = 1.0
 
-		# Play animation
-		drone_animation_player.play("throttle_forward")
-		drone_animation_player.speed_scale = 2 + throttle_input * 3
-		# add yaw,pitch,roll animations also
+	if Input.is_action_just_released("shoot" + string_p2):
+		laser_sound.stop()
+		laser_hum_sound.stop()
+		var laser_material = laser.get_active_material(0)
+		var tween = create_tween()
+		tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		var identifier_laser_material = identifier_laser.get_active_material(0)
+		var tween2 = create_tween()
+		tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 
-		# Move using built-in velocity
-		move_and_slide()
+
+func _tick(_delta, tick):
+	pass
+
+
+func _rollback_tick(delta, tick, is_fresh):
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	else:
+		apply_friction(delta)
+		reset_orientation_to_neutral() # can use this for ez hover
+	
+	# Apply thrust
+	apply_thrust(input.throttle_input, delta)
+	
+	# Apply yaw
+	apply_yaw(input.yaw_input, delta)
+
+	# Apply roll
+	apply_roll(input.roll_input, delta)
+	
+	# Apply pitch
+	apply_pitch(input.pitch_input, delta)
+	
+	# Apply angular drag to reduce angular velocities
+	apply_angular_drag(delta)
+	
+	# Apply movement
+	velocity *= NetworkTime.physics_factor
+	move_and_slide()
+	velocity /= NetworkTime.physics_factor
 
 
 func apply_exponential_ramp(input_value: float) -> float:
