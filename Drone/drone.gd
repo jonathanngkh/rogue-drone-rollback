@@ -19,11 +19,7 @@ var player_id: int = -1
 @onready var identifier_laser: MeshInstance3D = $IdentifierLaserScaler/IdentifierLaser
 @onready var you_died_overlay: TextureRect = $HUD/YouDied
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
-@onready var hit_marker_sound: AudioStreamPlayer = $HitMarkerSound
-@onready var laser_sound: AudioStreamPlayer = $LaserSound
-@onready var laser_hum_sound: AudioStreamPlayer = $LaserHumSound
-@onready var crosshair: TextureRect = $HUD/Crosshair
-@onready var hitmarker: TextureRect = $HUD/Hitmarker
+
 @onready var red_indicator: Node3D = $"Pivot/drone edited origins/root/node_id273/RedIndicator"
 
 @export var health := 5
@@ -82,8 +78,10 @@ func _ready() -> void:
 		
 
 func _process(delta: float) -> void:
+	# remove Drone #1 if host_only was clicked
 	if name == "Drone #1" and brawler_spawner.spawn_host_avatar == false:
 		queue_free()
+		
 	$HUD/FPS.text = "FPS: " + str(Engine.get_frames_per_second())
 	if Input.is_action_just_pressed("debug"):
 		print('device index: %s' % device_index)
@@ -115,25 +113,7 @@ func _process(delta: float) -> void:
 	drone_animation_player.speed_scale = 2 + input.throttle_input * 3
 	# add yaw,pitch,roll animations also
 
-	if Input.is_action_just_pressed("shoot" + string_p2):
-		laser_sound.play()
-		laser_hum_sound.play()
-		
-	if Input.is_action_pressed("shoot" + string_p2):
-		#shoot_bullet()
-		shoot_laser()
-		laser.get_active_material(0).albedo_color.a = 1.0
-		identifier_laser.get_active_material(0).albedo_color.a = 1.0
 
-	if Input.is_action_just_released("shoot" + string_p2):
-		laser_sound.stop()
-		laser_hum_sound.stop()
-		var laser_material = laser.get_active_material(0)
-		var tween = create_tween()
-		tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-		var identifier_laser_material = identifier_laser.get_active_material(0)
-		var tween2 = create_tween()
-		tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 
 
 #func _tick(_delta, tick):
@@ -262,36 +242,7 @@ func reset_orientation_to_neutral() -> void: # but 'smoothly'
 	# Apply the interpolated rotation
 	transform.basis = Basis(smooth_quat)
 
-func shoot_bullet() -> void:
-	# Instantiate the bullet
-	var bullet = bullet_scene.instantiate()
 
-	# Add the bullet to the scene and apply a force to shoot it forward
-	get_parent().add_child(bullet)
-	# Set the bullet's initial position and rotation to match the drone's current position and facing direction
-	bullet.global_transform.origin = transform.origin - 3*transform.basis.z  # Position in front of the drone
-	bullet.rotation_degrees = transform.basis.get_euler() # Match the drone's rotation
-	bullet.apply_impulse(-transform.basis.z * bullet_speed + velocity, Vector3.ZERO)
-
-# need to move to rpc call, determined by server.
-# should just send input. this code would then move to server, and it would also have arguments for who is shooting and who was shot
-func shoot_laser() -> void:
-	if ray_cast.is_colliding():
-		var collider = ray_cast.get_collider()
-		print(str(multiplayer.get_unique_id()) + " shot " + str(collider))
-		if collider == self:
-			return
-		if collider.is_in_group("bullseye") or collider.is_in_group("player"):
-			animate_hitmarker()
-			if not hit_marker_sound.is_playing():
-				hit_marker_sound.play()
-				collider.hit_by_bullet()
-
-func animate_hitmarker() -> void:
-	var tween = create_tween()
-	tween.tween_property(crosshair, "self_modulate", Color("ffffff"), 0.2 ).from(Color("ff0000"))
-	var tween_diagonal = create_tween()
-	tween_diagonal.tween_property(hitmarker, "self_modulate", Color("ffffff00"), 0.2 ).from(Color("ff0000"))
 
 
 func update_engine_sound(throttle_input: float, yaw_input: float, pitch_input: float, roll_input: float) -> void:

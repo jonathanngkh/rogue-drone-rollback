@@ -24,6 +24,7 @@ func _ready():
 
 func _handle_connected(id: int):
 	request_initial_settings.rpc()
+	
 	if joining_screen:
 		joining_screen.visible = true
 	

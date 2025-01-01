@@ -7,6 +7,7 @@ var throttle_input : float
 var pitch_input : float
 var roll_input : float
 var yaw_input : float
+var is_firing : bool
 
 func _gather():
 	# Throttle
@@ -17,6 +18,12 @@ func _gather():
 	roll_input = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
 	# Yaw
 	yaw_input = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+	
+	# Fire
+	is_firing = Input.is_action_pressed("shoot")
+	
+	# Zoom
+	
 	## Movement
 	#movement = Vector3(
 		#Input.get_axis("move_west", "move_east"),
