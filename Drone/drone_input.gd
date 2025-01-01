@@ -1,7 +1,7 @@
 extends BaseNetInput
 class_name DroneInput
 
-@onready var _player: Node3D = get_parent()
+#@onready var _player: Node3D = get_parent()
 
 var throttle_input : float
 var pitch_input : float

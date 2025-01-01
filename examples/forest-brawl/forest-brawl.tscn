@@ -28,7 +28,7 @@ font_size = 64
 
 [node name="Network" type="Node" parent="."]
 
-[node name="Brawler Spawner" type="Node" parent="Network" node_paths=PackedStringArray("spawn_root", "camera", "joining_screen", "name_input")]
+[node name="Brawler Spawner" type="Node" parent="Network" node_paths=PackedStringArray("spawn_root", "camera", "joining_screen", "name_input") groups=["Brawler Spawner"]]
 unique_name_in_owner = true
 script = ExtResource("5_qv1fx")
 player_scene = ExtResource("3_3rx0j")

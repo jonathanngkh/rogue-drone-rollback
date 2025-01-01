@@ -46,6 +46,10 @@ enabled=PackedStringArray("res://addons/netfox.extras/plugin.cfg", "res://addons
 
 import/fbx/enabled=false
 
+[global_group]
+
+"Brawler Spawner"=""
+
 [input]
 
 move_west={

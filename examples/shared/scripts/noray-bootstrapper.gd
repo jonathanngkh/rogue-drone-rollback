@@ -53,7 +53,8 @@ func disconnect_from_noray():
 func host_only():
 	var brawler_spawner: BrawlerSpawner = %"Brawler Spawner"
 	if brawler_spawner != null:
-		brawler_spawner.spawn_host_avatar = false
+		#brawler_spawner.spawn_host_avatar = false
+		brawler_spawner.set_spawn_host_avatar.rpc(false)
 	host()
 
 func host():

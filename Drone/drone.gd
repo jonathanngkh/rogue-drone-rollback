@@ -10,6 +10,7 @@ var player_id: int = -1
 		nametag.text = p_name
 @onready var input: DroneInput = $Input
 @onready var nametag: Label3D = $Nametag
+@onready var brawler_spawner = get_tree().get_first_node_in_group('Brawler Spawner')
 @onready var drone_animation_player: AnimationPlayer = $"Pivot/drone edited origins/DroneAnimationPlayer"
 @onready var bullet_scene: PackedScene = preload("res://Bullet/bullet.tscn") # Bullet scene
 @onready var ray_cast: RayCast3D = $Node3D/Camera3D/RayCast3D
@@ -57,19 +58,21 @@ var roll_velocity: float = 0.0
 
 var device_index : int
 var string_p2 : String = ""
+var respawn_count: int = 0
 
 func _ready() -> void:
+	_snap_to_spawn()
 	add_to_group("player")
 	laser.get_active_material(0).albedo_color.a = 0.0
 	#identifier_laser.get_active_material(0).albedo_color.a = 0.0
-	if name == "Drone":
-		device_index = 0
-	elif name == "DroneP2":
-		device_index = 1
-		string_p2 = "_p2"
+	#if name == "Drone":
+		#device_index = 0
+	#elif name == "DroneP2":
+		#device_index = 1
+		#string_p2 = "_p2"
 	Input.stop_joy_vibration(device_index)
-	$MultiplayerSynchronizer.set_multiplayer_authority(name.to_int())
-	print("%s multi auth is %s" % [name, $MultiplayerSynchronizer.get_multiplayer_authority()])
+	$MultiplayerSynchronizer.set_multiplayer_authority(player_id)
+	print("%s's MultiplayerSynchronizer authority is %s" % [name, $MultiplayerSynchronizer.get_multiplayer_authority()])
 	fpv_camera.current = false
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		fpv_camera.current = true
@@ -79,6 +82,8 @@ func _ready() -> void:
 		
 
 func _process(delta: float) -> void:
+	if name == "Drone #1" and brawler_spawner.spawn_host_avatar == false:
+		queue_free()
 	$HUD/FPS.text = "FPS: " + str(Engine.get_frames_per_second())
 	if Input.is_action_just_pressed("debug"):
 		print('device index: %s' % device_index)
@@ -131,11 +136,11 @@ func _process(delta: float) -> void:
 		tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 
 
-func _tick(_delta, tick):
-	pass
+#func _tick(_delta, tick):
+	#pass
 
 
-func _rollback_tick(delta, tick, is_fresh):
+func _rollback_tick(delta, _tick, _is_fresh):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -332,3 +337,12 @@ func death() -> void:
 	#you_died_overlay.self_modulate.a = 1
 	you_died_overlay.visible = true
 	print(name + " died")
+
+
+func _snap_to_spawn():
+	#pass
+	var spawns = get_tree().get_nodes_in_group("Spawn Points")
+	var idx = hash(player_id + respawn_count * 39) % spawns.size()
+	var spawn = spawns[idx] as Node3D
+	
+	global_transform = spawn.global_transform
