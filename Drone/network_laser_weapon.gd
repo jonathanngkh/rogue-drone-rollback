@@ -11,6 +11,12 @@ class_name NetworkWeaponHitscan3D
 @onready var hitmarker: TextureRect = $"../HUD/Hitmarker"
 @onready var ray_cast: RayCast3D = $"../Node3D/Camera3D/RayCast3D"
 
+@export var laser_transparency: float = 0.0:
+	get:
+		return laser.get_active_material(0).albedo_color.a
+	set(transparency):
+		laser.get_active_material(0).albedo_color.a = transparency
+
 ## Maximum distance to cast the ray
 @export var max_distance: float = 5000.0
 
@@ -20,10 +26,12 @@ class_name NetworkWeaponHitscan3D
 ## Colliders excluded from raycast hits
 @export var exclude: Array[RID] = []
 
-var _weapon: _NetworkWeaponProxy
 
+var _weapon: _NetworkWeaponProxy
 func _ready():
 	NetworkTime.on_tick.connect(_tick)
+	#laser_transparency = laser.get_active_material(0).albedo_color.a
+	
 ## Try to fire the weapon and return the projectile.
 ## [br][br]
 ## Returns true if the weapon was fired.
@@ -130,8 +138,8 @@ func _on_hit(result: Dictionary):
 	# For example, you might emit a signal or instantiate a hit effect scene:
 	# emit_signal("hit_detected", hit_position, hit_normal, collider)
 	pass
-@onready var laser: MeshInstance3D = $"../Scaler/Laser"
 @onready var identifier_laser: MeshInstance3D = $"../IdentifierLaserScaler/IdentifierLaser"
+@onready var laser: MeshInstance3D = $"../Scaler/Laser"
 
 ## Override to implement firing effects, like muzzle flash or sound.
 func _on_fire():
@@ -146,12 +154,6 @@ func _tick(_delta: float, _t: int):
 		fire()
 
 func _process(_delta: float) -> void:
-	if input.is_firing:
-		laser_hum_sound.play()
-		laser_sound.play()
-	else:
-		laser_hum_sound.stop()
-		laser_sound.stop()
 	if Input.is_action_just_pressed("shoot"):
 		laser_sound.play()
 		laser_hum_sound.play()
@@ -165,6 +167,7 @@ func _process(_delta: float) -> void:
 		var identifier_laser_material = identifier_laser.get_active_material(0)
 		var tween2 = create_tween()
 		tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		print("laser albedo var test: " + str(laser_material.albedo_color.a))
 # copied from drone:
 #func shoot_bullet() -> void:
 	## Instantiate the bullet
