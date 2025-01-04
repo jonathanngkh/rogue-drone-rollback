@@ -4,7 +4,7 @@ class_name NetworkWeaponHitscan3D
 
 @onready var input: DroneInput = $"../Input"
 @onready var hit_marker_sound: AudioStreamPlayer = $"../HitMarkerSound"
-
+@onready var camera: Camera3D = $"../Node3D/Camera3D"
 @onready var laser_sound: AudioStreamPlayer = $"../LaserSound"
 @onready var laser_hum_sound: AudioStreamPlayer = $"../LaserHumSound"
 @onready var crosshair: TextureRect = $"../HUD/Crosshair"
@@ -87,8 +87,8 @@ func _spawn():
 func _get_data() -> Dictionary:
 	# Collect data needed to synchronize the firing event.
 	return {
-		"origin": global_transform.origin,
-		"direction": -global_transform.basis.z  # Assuming forward direction.
+		"origin": camera.global_transform.origin,
+		"direction": -camera.global_transform.basis.z  # Assuming forward direction.
 	}
 
 func _apply_data(data: Dictionary):
@@ -130,6 +130,10 @@ func _reconcile(local_data: Dictionary, remote_data: Dictionary):
 ## The parameter is the result of a
 ## [method PhysicsDirectSpaceState3D.intersect_ray] call.
 func _on_hit(result: Dictionary):
+	if result.collider.is_in_group('player'):
+		hit_marker_sound.play()
+		animate_hitmarker()
+		print(result.collider)
 	# Implement hit effect logic here.
 	# var hit_position = result.position
 	# var hit_normal = result.normal
@@ -161,13 +165,13 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_released("shoot"):
 		laser_sound.stop()
 		laser_hum_sound.stop()
-		var laser_material = laser.get_active_material(0)
-		var tween = create_tween()
-		tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-		var identifier_laser_material = identifier_laser.get_active_material(0)
-		var tween2 = create_tween()
-		tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
-		print("laser albedo var test: " + str(laser_material.albedo_color.a))
+		laser.get_active_material(0).albedo_color.a = 0.0
+		#var laser_material = laser.get_active_material(0)
+		#var tween = create_tween()
+		#tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		#var identifier_laser_material = identifier_laser.get_active_material(0)
+		#var tween2 = create_tween()
+		#tween2.tween_property(identifier_laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 # copied from drone:
 #func shoot_bullet() -> void:
 	## Instantiate the bullet
