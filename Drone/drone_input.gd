@@ -8,6 +8,8 @@ var pitch_input : float
 var roll_input : float
 var yaw_input : float
 var is_firing : bool
+var is_just_pressed_firing : bool
+var is_just_released_firing : bool
 
 func _gather():
 	# Throttle
@@ -21,7 +23,8 @@ func _gather():
 	
 	# Fire
 	is_firing = Input.is_action_pressed("shoot")
-	
+	is_just_pressed_firing = Input.is_action_just_pressed("shoot")
+	is_just_released_firing = Input.is_action_just_released("shoot")
 	# Zoom
 	
 	## Movement

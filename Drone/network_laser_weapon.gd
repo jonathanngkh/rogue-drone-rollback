@@ -10,12 +10,20 @@ class_name NetworkWeaponHitscan3D
 @onready var crosshair: TextureRect = $"../HUD/Crosshair"
 @onready var hitmarker: TextureRect = $"../HUD/Hitmarker"
 @onready var ray_cast: RayCast3D = $"../Node3D/Camera3D/RayCast3D"
+@onready var identifier_laser_scaler: Node3D = $"../IdentifierLaserScaler"
 
-@export var laser_transparency: float = 0.0:
-	get:
-		return laser.get_active_material(0).albedo_color.a
-	set(transparency):
-		laser.get_active_material(0).albedo_color.a = transparency
+@onready var identifier_laser: MeshInstance3D = $"../IdentifierLaserScaler/IdentifierLaser"
+@onready var laser: MeshInstance3D = $"../Scaler/Laser"
+#@export var laser_transparency: float = 0.0:
+	#get:
+		#return laser.get_active_material(0).albedo_color.a
+	#set(transparency):
+		#laser.get_active_material(0).albedo_color.a = transparency
+var identifier_laser_transparency: float = 0.0
+	#get:
+		#return identifier_laser.get_active_material(0).albedo_color.a
+	#set(transparency):
+		#identifier_laser.get_active_material(0).albedo_color.a = transparency
 
 ## Maximum distance to cast the ray
 @export var max_distance: float = 5000.0
@@ -88,7 +96,7 @@ func _get_data() -> Dictionary:
 	# Collect data needed to synchronize the firing event.
 	return {
 		"origin": camera.global_transform.origin,
-		"direction": -camera.global_transform.basis.z  # Assuming forward direction.
+		"direction": -camera.global_transform.basis.z  # Forward direction from the middle of the camera
 	}
 
 func _apply_data(data: Dictionary):
@@ -131,9 +139,12 @@ func _reconcile(local_data: Dictionary, remote_data: Dictionary):
 ## [method PhysicsDirectSpaceState3D.intersect_ray] call.
 func _on_hit(result: Dictionary):
 	if result.collider.is_in_group('player'):
+		if result.collider == get_parent():
+			print("collider detected self, ignored")
+			return
 		hit_marker_sound.play()
 		animate_hitmarker()
-		print(result.collider)
+		print(str(multiplayer.get_unique_id()) + " shot " + str(result.collider))
 	# Implement hit effect logic here.
 	# var hit_position = result.position
 	# var hit_normal = result.normal
@@ -142,30 +153,52 @@ func _on_hit(result: Dictionary):
 	# For example, you might emit a signal or instantiate a hit effect scene:
 	# emit_signal("hit_detected", hit_position, hit_normal, collider)
 	pass
-@onready var identifier_laser: MeshInstance3D = $"../IdentifierLaserScaler/IdentifierLaser"
-@onready var laser: MeshInstance3D = $"../Scaler/Laser"
+
 
 ## Override to implement firing effects, like muzzle flash or sound.
 func _on_fire():
 	# Implement firing effect logic here.
-	laser.get_active_material(0).albedo_color.a = 1.0
-	identifier_laser.get_active_material(0).albedo_color.a = 1.0
+	#laser.get_active_material(0).albedo_color.a = 1.0
+	
 	pass
 
 
 func _tick(_delta: float, _t: int):
 	if input.is_firing:
 		fire()
+		#identifier_laser.visible = true
+
+func _rollback_tick(delta, _tick, _is_fresh):
+	if input.is_firing:
+		identifier_laser_scaler.visible = true
+	else:
+		identifier_laser_scaler.visible = false
+		
 
 func _process(_delta: float) -> void:
+	#if input.is_just_released_firing:
+		#identifier_laser_scaler.visible = false
+	#if input.is_just_pressed_firing:
+		#identifier_laser_transparency = 1.0
+		#identifier_laser.get_active_material(0).albedo_color.a = 1.0
+		#laser.get_active_material(0).albedo_color.a = 1.0
+	
+	#if input.is_just_released_firing:
+		#identifier_laser_transparency = 0.0
+		#laser.get_active_material(0).albedo_color.a = 0.0
+	
 	if Input.is_action_just_pressed("shoot"):
+		#laser.get_active_material(0).albedo_color.a = 1.0
+		#identifier_laser.get_active_material(0).albedo_color.a = 1.0
 		laser_sound.play()
 		laser_hum_sound.play()
 
 	if Input.is_action_just_released("shoot"):
 		laser_sound.stop()
 		laser_hum_sound.stop()
-		laser.get_active_material(0).albedo_color.a = 0.0
+		#laser.get_active_material(0).albedo_color.a = 0.0
+		#identifier_laser.get_active_material(0).albedo_color.a = 0.0
+		#laser.get_active_material(0).albedo_color.a = 0.0
 		#var laser_material = laser.get_active_material(0)
 		#var tween = create_tween()
 		#tween.tween_property(laser_material, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
