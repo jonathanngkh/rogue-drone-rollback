@@ -40,6 +40,7 @@ var player_id: int = -1
 @export var default_fov: float = 60.0  # Normal field of view
 @export var zoom_fov: float = 20.0     # Zoomed-in field of view
 @export var zoom_speed: float = 15.0   # How fast the zoom transitions
+var is_zoom : bool = false
 
 # Pitch/Volume range for engine whine
 @export var min_pitch = 0.9  # Pitch at zero throttle
@@ -95,16 +96,6 @@ func _process(delta: float) -> void:
 	else:
 		fpv_camera.fov = lerp(fpv_camera.fov, default_fov, zoom_speed * delta)
 
-	# Start zoom
-	if Input.is_action_just_pressed("aim_down_sights"):
-		max_pitch_speed *= zoom_sensitivity_multiplier
-		max_roll_speed *= zoom_sensitivity_multiplier
-		max_yaw_speed *= zoom_sensitivity_multiplier
-	# End zoom
-	if Input.is_action_just_released("aim_down_sights"):
-		max_pitch_speed *= 1/zoom_sensitivity_multiplier
-		max_roll_speed *= 1/zoom_sensitivity_multiplier
-		max_yaw_speed *= 1/zoom_sensitivity_multiplier
 		# Adjust engine sound based on throttle input
 	update_engine_sound(input.throttle_input, input.yaw_input, input.pitch_input, input.roll_input)
 	
@@ -128,6 +119,21 @@ func _rollback_tick(delta, _tick, _is_fresh):
 		apply_friction(delta)
 		reset_orientation_to_neutral() # can use this for ez hover
 	
+	# Start zoom
+	if input.is_zooming:
+		if not is_zoom:
+			max_pitch_speed *= zoom_sensitivity_multiplier
+			max_roll_speed *= zoom_sensitivity_multiplier
+			max_yaw_speed *= zoom_sensitivity_multiplier
+			is_zoom = true
+	# End zoom
+	else:
+		if is_zoom:
+			max_pitch_speed *= 1/zoom_sensitivity_multiplier
+			max_roll_speed *= 1/zoom_sensitivity_multiplier
+			max_yaw_speed *= 1/zoom_sensitivity_multiplier
+			is_zoom = false
+		
 	# Apply thrust
 	apply_thrust(input.throttle_input, delta)
 	
@@ -152,6 +158,7 @@ func _rollback_tick(delta, _tick, _is_fresh):
 func apply_exponential_ramp(input_value: float) -> float:
 	# Apply the exponential curve: input^ramp_factor
 	return sign(input_value) * pow(abs(input_value), ramp_factor)
+
 
 func apply_thrust(throttle_input: float, delta: float) -> void:
 	throttle_input = apply_exponential_ramp(throttle_input)
