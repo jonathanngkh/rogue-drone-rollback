@@ -8,11 +8,11 @@ var fade_speed: float = 8.0
 
 var respawn_tick: int = 0
 
-func _ready():
+func _ready() -> void:
 	NetworkTime.after_tick.connect(_tick)
 	set_multiplayer_authority(1)
 
-func _tick(delta, tick):
+func _tick(delta: float, tick: float) -> void:
 	if is_active:
 		scale = scale.lerp(Vector3.ONE, fade_speed * delta)
 		for body in get_overlapping_bodies():
@@ -30,22 +30,22 @@ func _tick(delta, tick):
 
 func _has_powerup(target: Node) -> bool:
 	return target.get_children()\
-		.filter(func(child): return child is Effect)\
-		.any(func(effect: Effect): return effect.is_active())
+		.filter(func(child: Node) -> bool: return child is Effect)\
+		.any(func(effect: Effect) -> bool: return effect.is_active())
 
 @rpc("authority", "reliable", "call_local")
-func _spawn_effect(effect_idx: int, target_path: NodePath):
-	var effect = effects[effect_idx]
-	var target = get_tree().get_root().get_node(target_path)
+func _spawn_effect(effect_idx: int, target_path: NodePath) -> void:
+	var effect := effects[effect_idx]
+	var target := get_tree().get_root().get_node(target_path)
 
-	var spawn = effect.instantiate()
+	var spawn := effect.instantiate()
 	target.add_child(spawn)
 
 @rpc("authority", "reliable")
-func _take():
+func _take()  -> void:
 	respawn_tick = NetworkTime.tick + NetworkTime.seconds_to_ticks(cooldown)
 	is_active = false
 
 @rpc("authority", "reliable")
-func _respawn():
+func _respawn()  -> void:
 	is_active = true

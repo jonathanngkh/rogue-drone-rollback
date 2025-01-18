@@ -9,7 +9,7 @@ class_name BrawlerWeapon
 
 var last_fire: int = -1
 
-func _ready():
+func _ready() -> void:
 	NetworkTime.on_tick.connect(_tick)
 
 func _can_fire() -> bool:
@@ -18,7 +18,7 @@ func _can_fire() -> bool:
 func _can_peer_use(peer_id: int) -> bool:
 	return peer_id == input.get_multiplayer_authority()
 
-func _after_fire(_projectile: Node3D):
+func _after_fire(_projectile: Node3D) -> void:
 	last_fire = NetworkTime.tick
 	sound.play()
 
@@ -30,6 +30,6 @@ func _spawn() -> Node3D:
 	
 	return bomb_projectile
 
-func _tick(_delta: float, _t: int):
+func _tick(_delta: float, _t: int) -> void:
 	if input.is_firing:
 		fire()

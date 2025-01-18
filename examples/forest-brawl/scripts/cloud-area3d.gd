@@ -11,7 +11,7 @@ var _clouds: Array[Node3D] = []
 var _speeds: Array[float] = []
 var _aabb: AABB
 
-func _ready():
+func _ready() -> void:
 	_aabb = _find_aabb()
 	if not _aabb.has_volume():
 		push_error("CloudArea required a box shape!")
@@ -19,16 +19,16 @@ func _ready():
 		return
 
 	for i in range(count):
-		var cloud = _spawn_cloud()
+		var cloud := _spawn_cloud()
 		cloud.position = _aabb.position + _aabb.size * Vector3(randf(), randf(), randf())
 		
 		_clouds.push_back(cloud)
 		_speeds.push_back(randf_range(float_speed_min, float_speed_max))
 
-func _process(delta):
+func _process(delta: float) -> void:
 	for i in range(count):
-		var cloud = _clouds[i]
-		var speed = _speeds[i]
+		var cloud := _clouds[i]
+		var speed := _speeds[i]
 		
 		cloud.position += float_direction * speed * delta
 		
@@ -44,22 +44,22 @@ func _process(delta):
 			_speeds[i] = randf_range(float_speed_min, float_speed_max)
 
 func _spawn_cloud() -> Node3D:
-	var cloud_template = clouds.pick_random() as PackedScene
-	var cloud = cloud_template.instantiate() as Node3D
+	var cloud_template := clouds.pick_random() as PackedScene
+	var cloud := cloud_template.instantiate() as Node3D
 	add_child(cloud)
 	cloud.owner = self
 	
 	return cloud
 
 func _find_aabb() -> AABB:
-	var shape_owners = get_shape_owners()
+	var shape_owners := get_shape_owners()
 	for shape_owner in shape_owners:
 		for i in range(shape_owner_get_shape_count(shape_owner)):
-			var shape = shape_owner_get_shape(shape_owner, i)
+			var shape := shape_owner_get_shape(shape_owner, i)
 			
 			if shape is BoxShape3D:
-				var pos = shape_owner_get_transform(shape_owner).origin
-				var size = shape.size
+				var pos := shape_owner_get_transform(shape_owner).origin
+				var size : Vector3 = shape.size
 				return AABB(pos - size / 2, size)
 	
 	return AABB(Vector3.ZERO, Vector3.ZERO)

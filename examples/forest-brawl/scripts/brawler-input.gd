@@ -16,11 +16,11 @@ var _aim_target: Vector3
 var _projected_target: Vector3
 var _has_aim: bool = false
 
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if event is InputEventMouse:
 		_last_mouse_input = NetworkTime.local_time
 
-func _gather():
+func _gather() -> void:
 	# Movement
 	movement = Vector3(
 		Input.get_axis("move_west", "move_east"),
@@ -65,18 +65,18 @@ func _gather():
 	
 	is_firing = Input.is_action_pressed("weapon_fire")
 
-func _physics_process(_delta):
+func _physics_process(_delta: float) -> void:
 	if not camera:
 		camera = get_viewport().get_camera_3d()
 
 	# Aim
-	var mouse_pos = get_viewport().get_mouse_position()
-	var ray_origin = camera.project_ray_origin(mouse_pos)
-	var ray_normal = camera.project_ray_normal(mouse_pos)
-	var ray_length = 128
+	var mouse_pos := get_viewport().get_mouse_position()
+	var ray_origin := camera.project_ray_origin(mouse_pos)
+	var ray_normal := camera.project_ray_normal(mouse_pos)
+	var ray_length := 128
 
-	var space = camera.get_world_3d().direct_space_state
-	var hit = space.intersect_ray(PhysicsRayQueryParameters3D.create(
+	var space := camera.get_world_3d().direct_space_state
+	var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(
 		ray_origin, ray_origin + ray_normal * ray_length
 	))
 
@@ -86,6 +86,6 @@ func _physics_process(_delta):
 		_has_aim = true
 	else:
 		# Project to player's height
-		var height_diff = _player.global_position.y - ray_origin.y
+		var height_diff := _player.global_position.y - ray_origin.y
 		_projected_target = ray_origin + ray_normal * (height_diff / ray_normal.y)
 		_has_aim = false

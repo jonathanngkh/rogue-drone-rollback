@@ -32,7 +32,9 @@ WindowTiler="*res://addons/netfox.extras/window-tiler.gd"
 
 [debug]
 
+gdscript/warnings/unused_parameter=0
 gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=2
 
 [display]
 
@@ -51,6 +53,7 @@ import/fbx/enabled=false
 [global_group]
 
 "Brawler Spawner"=""
+WorldEnvironment=""
 
 [input]
 

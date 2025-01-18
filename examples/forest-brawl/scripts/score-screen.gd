@@ -9,34 +9,34 @@ class_name ScoreScreen
 
 var active: bool = false
 
-func render(scores: Dictionary):
+func render(scores: Dictionary)  -> void:
 	clear()
 	
 	if not visible:
 		message_label.text = messages[randi() % messages.size()]
 	
 	for player_name in _sort_scores(scores):
-		var points = scores[player_name]
+		var points : int = scores[player_name]
 		names_column.add_child(_make_label(str(player_name)))
 		scores_column.add_child(_make_label(str(points)))
 
-func clear():
+func clear() -> void:
 	for child in names_column.get_children() + scores_column.get_children():
 		child.queue_free()
 
-func _ready():
+func _ready() -> void:
 	modulate.a = 0
 	visible = false
 
-func _process(delta):
-	var current = modulate.a
-	var target = 1.0 if active else 0.0
+func _process(delta: float) -> void:
+	var current := modulate.a
+	var target := 1.0 if active else 0.0
 	modulate.a = move_toward(current, target, delta / fade_time)
 	
 	visible = false if modulate.a < 0.05 else true
 
 func _make_label(text: String) -> Label:
-	var label = Label.new()
+	var label := Label.new()
 	label.text = text
 	label.size_flags_horizontal = SIZE_FILL
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -44,12 +44,12 @@ func _make_label(text: String) -> Label:
 
 func _sort_scores(scores: Dictionary) -> Array[String]:
 	var result: Array[String] = []
-	var points = scores.values()
+	var points := scores.values()
 	points.sort()
 	points.reverse()
 	
-	for score in points:
-		for player_name in scores:
+	for score: int in points:
+		for player_name: String in scores:
 			if not result.has(player_name) and scores[player_name] == score:
 				result.push_back(player_name)
 	

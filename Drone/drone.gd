@@ -10,7 +10,7 @@ var player_id: int = -1
 		nametag.text = p_name
 @onready var input: DroneInput = $Input
 @onready var nametag: Label3D = $Nametag
-@onready var brawler_spawner = get_tree().get_first_node_in_group('Brawler Spawner')
+@onready var brawler_spawner := get_tree().get_first_node_in_group('Brawler Spawner')
 @onready var drone_animation_player: AnimationPlayer = $"Pivot/drone edited origins/DroneAnimationPlayer"
 @onready var bullet_scene: PackedScene = preload("res://Bullet/bullet.tscn") # Bullet scene
 @onready var ray_cast: RayCast3D = $Node3D/Camera3D/RayCast3D
@@ -23,17 +23,17 @@ var player_id: int = -1
 @onready var red_indicator: Node3D = $"Pivot/drone edited origins/root/node_id273/RedIndicator"
 
 @export var health := 5
-@export var bullet_speed = 60.0 # Bullet speed
+@export var bullet_speed := 60.0 # Bullet speed
 
 @export var ramp_factor: float = 2.0 # Exponent for the exponential ramp
-@export var max_thrust = 100.0 # Maximum upward force (throttle)
-@export var max_yaw_speed = 5.0 # Maximum rotational speed for yaw
-@export var max_pitch_speed = 3.0 # Maximum rotational speed for pitch
-@export var max_roll_speed = 3.0 # Maximum rotational speed for roll
+@export var max_thrust := 100.0 # Maximum upward force (throttle)
+@export var max_yaw_speed := 5.0 # Maximum rotational speed for yaw
+@export var max_pitch_speed := 3.0 # Maximum rotational speed for pitch
+@export var max_roll_speed := 3.0 # Maximum rotational speed for roll
 
-@export var friction_coefficient = 10 # Adjust this value to tune the friction intensity
-@export var drag_coefficient = 0.1 # Adjust this value to tune drag intensity
-@export var angular_drag_coefficient = 0.1 # Adjust this to tune angular drag intensity
+@export var friction_coefficient := 10 # Adjust this value to tune the friction intensity
+@export var drag_coefficient := 0.1 # Adjust this value to tune drag intensity
+@export var angular_drag_coefficient := 0.1 # Adjust this to tune angular drag intensity
 
  # Reduce sensitivity to 50% while zoomed in
 @export var zoom_sensitivity_multiplier: float = 0.3
@@ -43,10 +43,10 @@ var player_id: int = -1
 var is_zoom : bool = false
 
 # Pitch/Volume range for engine whine
-@export var min_pitch = 0.9  # Pitch at zero throttle
-@export var max_pitch = 1.4  # Pitch at full throttle
-@export var min_volume = -10  # Volume (dB) at zero throttle
-@export var max_volume = -5  # Volume (dB) at full throttle
+@export var min_pitch := 0.9  # Pitch at zero throttle
+@export var max_pitch := 1.4  # Pitch at full throttle
+@export var min_volume := -10  # Volume (dB) at zero throttle
+@export var max_volume := -5  # Volume (dB) at full throttle
 
 # Variables to track angular velocities
 var pitch_velocity: float = 0.0
@@ -58,6 +58,8 @@ var string_p2 : String = ""
 var respawn_count: int = 0
 
 func _ready() -> void:
+	#var vp = get_viewport()
+	#vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
 	_snap_to_spawn()
 	add_to_group("player")
 	laser.get_active_material(0).albedo_color.a = 0.0
@@ -111,7 +113,7 @@ func _process(delta: float) -> void:
 	#pass
 
 
-func _rollback_tick(delta, _tick, _is_fresh):
+func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -163,10 +165,10 @@ func apply_exponential_ramp(input_value: float) -> float:
 func apply_thrust(throttle_input: float, delta: float) -> void:
 	throttle_input = apply_exponential_ramp(throttle_input)
 	# Get the thrust direction (normal to the drone's plane)
-	var thrust_direction = transform.basis.y.normalized() # Local "up" direction relative to the drone
+	var thrust_direction := transform.basis.y.normalized() # Local "up" direction relative to the drone
 
 	# Scale the thrust direction by the input and maximum thrust
-	var thrust_force = thrust_direction * throttle_input * max_thrust
+	var thrust_force := thrust_direction * throttle_input * max_thrust
 
 	# Apply thrust directly to velocity, scaled by delta
 	if throttle_input > 0:
@@ -178,7 +180,7 @@ func apply_thrust(throttle_input: float, delta: float) -> void:
 
 func apply_drag(delta: float) -> void:
 	# Drag reduces velocity proportionally to its current magnitude
-	var drag_force = velocity * drag_coefficient * delta
+	var drag_force := velocity * drag_coefficient * delta
 	velocity -= drag_force
 
 
@@ -235,16 +237,16 @@ func apply_friction(delta: float) -> void:
 
 func reset_orientation_to_neutral() -> void: # but 'smoothly'
 	# Set the drone's pitch and roll to neutral (parallel to the ground)
-	var target_rotation = transform.basis.get_euler()
+	var target_rotation := transform.basis.get_euler()
 	target_rotation.x = 0 # Set pitch to 0 (parallel to the ground)
 	target_rotation.z = 0 # Set roll to 0 (parallel to the ground)
 
 	# Create a quaternion from the target rotation (Euler angles)
-	var target_quaternion = Quaternion.from_euler(target_rotation)
+	var target_quaternion := Quaternion.from_euler(target_rotation)
 
 	# Interpolate from the current rotation to the target rotation
-	var current_quaternion = transform.basis.get_rotation_quaternion()
-	var smooth_quat = current_quaternion.slerp(target_quaternion, 0.2) # Adjust 0.1 for smoothness
+	var current_quaternion := transform.basis.get_rotation_quaternion()
+	var smooth_quat := current_quaternion.slerp(target_quaternion, 0.2) # Adjust 0.1 for smoothness
 
 	# Apply the interpolated rotation
 	transform.basis = Basis(smooth_quat)
@@ -262,8 +264,8 @@ func update_engine_sound(throttle_input: float, yaw_input: float, pitch_input: f
 	yaw_input = apply_exponential_ramp(abs(yaw_input))
 	roll_input = apply_exponential_ramp(abs(roll_input))
 	throttle_input = apply_exponential_ramp(throttle_input)
-	var pitch = lerp(min_pitch, max_pitch, throttle_input * 1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
-	var volume = lerp(min_volume, max_volume, throttle_input*1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
+	var pitch : float = lerp(min_pitch, max_pitch, throttle_input * 1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
+	var volume : float = lerp(min_volume, max_volume, throttle_input*1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
 
 	# Apply pitch and volume to the engine sound
 	engine_sound.pitch_scale = pitch
@@ -276,8 +278,8 @@ func update_engine_sound(throttle_input: float, yaw_input: float, pitch_input: f
 func hit_by_bullet() -> void:
 	print(name + " was hit by bullet()")
 	for mesh in red_indicator.get_children():
-		var mesh_surface_override = mesh.get_surface_override_material(0)
-		var tween = create_tween()
+		var mesh_surface_override : Mesh = mesh.get_surface_override_material(0)
+		var tween := create_tween()
 		tween.tween_property(mesh_surface_override, "albedo_color:a", 0.0, 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD).from(1.0)
 		
 	Input.start_joy_vibration(device_index, 1, 1, 0.2)
@@ -297,10 +299,10 @@ func death() -> void:
 	print(name + " died")
 
 
-func _snap_to_spawn():
+func _snap_to_spawn() -> void:
 	#pass
-	var spawns = get_tree().get_nodes_in_group("Spawn Points")
-	var idx = hash(player_id + respawn_count * 39) % spawns.size()
-	var spawn = spawns[idx] as Node3D
+	var spawns := get_tree().get_nodes_in_group("Spawn Points")
+	var idx := hash(player_id + respawn_count * 39) % spawns.size()
+	var spawn : Node3D = spawns[idx]
 	
 	global_transform = spawn.global_transform

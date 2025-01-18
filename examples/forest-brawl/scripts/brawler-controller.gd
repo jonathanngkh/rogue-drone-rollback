@@ -2,8 +2,8 @@ extends CharacterBody3D
 class_name BrawlerController
 
 # Stats
-@export var speed = 5.0
-@export var jump_velocity = 4.5
+@export var speed := 5.0
+@export var jump_velocity := 4.5
 
 # Spawn
 @export var spawn_point: Vector3 = Vector3(0, 4, 0)
@@ -29,11 +29,11 @@ var player_name: String = "":
 var player_id: int = -1
 var last_hit_player: BrawlerController
 var last_hit_tick: int = -1
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var respawn_tick: int = -1
 var respawn_count: int = 0
 
-func register_hit(from: BrawlerController):
+func register_hit(from: BrawlerController) -> void:
 	if from == self:
 		push_error("Player %s (#%s) trying to register hit on themselves!" % [player_name, player_id])
 		return
@@ -41,7 +41,7 @@ func register_hit(from: BrawlerController):
 	last_hit_player = from
 	last_hit_tick = NetworkRollback.tick if NetworkRollback.is_rollback() else NetworkTime.tick
 
-func _ready():
+func _ready() -> void:
 	if not input:
 		input = $Input
 	
@@ -54,40 +54,40 @@ func _ready():
 		player_name = "Nameless Brawler #%s" % [player_id]
 	
 	# Set player color
-	var color = Color.from_hsv((hash(player_id) % 256) / 256.0, 1.0, 1.0)
+	var color := Color.from_hsv((hash(player_id) % 256) / 256.0, 1.0, 1.0)
 	var material: StandardMaterial3D = mesh.get_active_material(0)
 	material = material.duplicate()
 	material.albedo_color = color
 	mesh.set_surface_override_material(0, material)
 
-func _process(delta):
+func _process(delta: float) -> void:
 	# Update animation
 	# Running
-	var movement = Vector3(velocity.x, 0, velocity.z) * speed
-	var relative_velocity = quaternion.inverse() * movement
-	relative_velocity.y = 0
-	relative_velocity /= speed
-	relative_velocity = Vector2(relative_velocity.x, relative_velocity.z)
-	var animated_velocity = animation_tree.get("parameters/Move/blend_position") as Vector2
+	var movement := Vector3(velocity.x, 0, velocity.z) * speed
+	var relative_velocity_3d : Vector3 = quaternion.inverse() * movement
+	relative_velocity_3d.y = 0
+	relative_velocity_3d /= speed
+	var relative_velocity := Vector2(relative_velocity_3d.x, relative_velocity_3d.z)
+	var animated_velocity : Vector2 = animation_tree.get("parameters/Move/blend_position")
 
 	animation_tree.set("parameters/Move/blend_position", animated_velocity.move_toward(relative_velocity, delta / 0.2))
 	
 	# Float
 	_force_update_is_on_floor()
-	var animated_float = animation_tree.get("parameters/Float/blend_amount") as float
-	var actual_float = 1.0 if not is_on_floor() else 0.0
+	var animated_float : float = animation_tree.get("parameters/Float/blend_amount")
+	var actual_float := 1.0 if not is_on_floor() else 0.0
 	animation_tree.set("parameters/Float/blend_amount", move_toward(animated_float, actual_float, delta / 0.2))
 	
 	# Speed
 	animation_tree.set("parameters/MoveScale/scale", speed / 3.75)
 	animation_tree.set("parameters/ThrowScale/scale", min(weapon.fire_cooldown / (10. / 24.), 1.0))
 
-func _tick(_delta, tick):
+func _tick(_delta: float, tick: float) -> void:
 	# Run throw animation if firing
 	if weapon.last_fire == tick:
 		animation_tree.set("parameters/Throw/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
-func _rollback_tick(delta, tick, is_fresh):
+func _rollback_tick(delta: float, tick: float, is_fresh: bool) -> void:
 	# Respawn
 	if tick == respawn_tick:
 		_snap_to_spawn()
@@ -116,7 +116,7 @@ func _rollback_tick(delta, tick, is_fresh):
 		velocity.y = jump_velocity * input.movement.y
 
 	# Movement
-	var direction = Vector3(input.movement.x, 0, input.movement.z).normalized()
+	var direction := Vector3(input.movement.x, 0, input.movement.z).normalized()
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
@@ -137,26 +137,26 @@ func _rollback_tick(delta, tick, is_fresh):
 	
 	# Death
 	if position.y < -death_depth and tick > respawn_tick and is_fresh:
-		var respawn_cooldown = respawn_time * NetworkTime.tickrate
-		respawn_tick = tick + respawn_cooldown
+		var respawn_cooldown : float = respawn_time * NetworkTime.tickrate
+		respawn_tick = int(tick + respawn_cooldown)
 		respawn_count += 1
 
 		fall_sound.play_random()
 
 		GameEvents.on_brawler_fall.emit(self)
 
-func _exit_tree():
+func _exit_tree() -> void:
 	GameEvents.on_brawler_despawn.emit(self)
 
-func _snap_to_spawn():
-	var spawns = get_tree().get_nodes_in_group("Spawn Points")
-	var idx = hash(player_id + respawn_count * 39) % spawns.size()
-	var spawn = spawns[idx] as Node3D
+func _snap_to_spawn() -> void:
+	var spawns := get_tree().get_nodes_in_group("Spawn Points")
+	var idx := hash(player_id + respawn_count * 39) % spawns.size()
+	var spawn := spawns[idx] as Node3D
 	
 	global_transform = spawn.global_transform
 
-func _force_update_is_on_floor():
-	var old_velocity = velocity
+func _force_update_is_on_floor() -> void:
+	var old_velocity := velocity
 	velocity *= 0
 	move_and_slide()
 	velocity = old_velocity

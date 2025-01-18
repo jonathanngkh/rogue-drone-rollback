@@ -1,6 +1,6 @@
 extends RigidBody3D
 
-@export var lifetime = 5.0 # Time in seconds before the bullet disappears
+@export var lifetime := 5.0 # Time in seconds before the bullet disappears
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 func _ready() -> void:
@@ -9,7 +9,7 @@ func _ready() -> void:
 	body_entered.connect(_on_collision)
 	
 func set_timer() -> void:
-	var timer = Timer.new()
+	var timer := Timer.new()
 	add_child(timer)
 	timer.wait_time = lifetime
 	timer.one_shot = true

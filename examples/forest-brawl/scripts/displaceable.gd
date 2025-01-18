@@ -4,12 +4,12 @@ class_name Displaceable
 @export var mass: float = 1.0
 var impulse: Vector3 = Vector3.ZERO
 
-func displace(speed: Vector3):
+func displace(speed: Vector3) -> void:
 	impulse += speed
 
-func _rollback_tick(delta, _t, _if):
-	var parent = get_parent_node_3d()
-	var offset = impulse * delta / mass
+func _rollback_tick(delta: float, _t: float, _if: bool) -> void:
+	var parent := get_parent_node_3d()
+	var offset := impulse * delta / mass
 	if parent is CharacterBody3D:
 		parent.move_and_collide(offset)
 	else:

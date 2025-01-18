@@ -12,7 +12,7 @@ var is_just_pressed_firing : bool
 var is_just_released_firing : bool
 var is_zooming : bool = false
 
-func _gather():
+func _gather() -> void:
 	# Throttle
 	throttle_input = Input.get_action_strength("throttle_forward")
 	# Pitch

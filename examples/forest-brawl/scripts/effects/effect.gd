@@ -10,7 +10,7 @@ var _apply_tick: int = 0
 var _cease_tick: int = 0
 var _destroy_tick: int = 0
 
-func _ready():
+func _ready() -> void:
 	if not get_parent() is BrawlerController:
 		push_error("Powerup effect added to non-player!")
 		queue_free()
@@ -18,7 +18,7 @@ func _ready():
 	
 	set_multiplayer_authority(1)
 
-	NetworkRollback.before_loop.connect(func(): NetworkRollback.notify_resimulation_start(_apply_tick), CONNECT_ONE_SHOT)
+	NetworkRollback.before_loop.connect(func() -> void: NetworkRollback.notify_resimulation_start(_apply_tick), CONNECT_ONE_SHOT)
 	NetworkRollback.on_process_tick.connect(_rollback_tick)
 	NetworkTime.on_tick.connect(_tick)
 	
@@ -29,28 +29,28 @@ func _ready():
 		_cease_tick + NetworkRollback.history_limit
 	)
 
-func _rollback_tick(tick):
+func _rollback_tick(tick: float) -> void:
 	if is_multiplayer_authority() and NetworkRollback.is_simulated(get_target()):
 		if tick == _apply_tick:
 			_apply()
 		if tick == _cease_tick:
 			_cease()
 
-func _tick(_delta, tick):
+func _tick(_delta: float, tick: float) -> void:
 	if tick == _cease_tick:
 		animation_player.play("death")
 	if tick >= _destroy_tick:
 		queue_free()
 
-func _apply():
+func _apply() -> void:
 	pass
 
-func _cease():
+func _cease() -> void:
 	pass
 
 func get_target() -> BrawlerController:
 	return get_parent_node_3d() as BrawlerController
 
 func is_active() -> bool:
-	var tick = NetworkRollback.tick if NetworkRollback.is_rollback() else NetworkTime.tick
+	var tick := NetworkRollback.tick if NetworkRollback.is_rollback() else NetworkTime.tick
 	return tick >= _apply_tick and tick < _cease_tick

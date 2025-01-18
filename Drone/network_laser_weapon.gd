@@ -36,7 +36,7 @@ var identifier_laser_transparency: float = 0.0
 
 
 var _weapon: _NetworkWeaponProxy
-func _ready():
+func _ready() -> void:
 	NetworkTime.on_tick.connect(_tick)
 	#laser_transparency = laser.get_active_material(0).albedo_color.a
 	
@@ -55,7 +55,7 @@ func fire() -> bool:
 func can_fire() -> bool:
 	return _weapon.can_fire()
 
-func _init():
+func _init() -> void:
 	_weapon = _NetworkWeaponProxy.new()
 	add_child(_weapon, true, INTERNAL_MODE_BACK)
 	_weapon.owner = self
@@ -85,10 +85,10 @@ func _can_peer_use(peer_id: int) -> bool:
 ## weapon.
 ## [br][br]
 ## See [NetworkWeapon].
-func _after_fire():
+func _after_fire() -> void:
 	pass
 
-func _spawn():
+func _spawn() -> void:
 	# No projectile is spawned for a hitscan weapon.
 	pass
 
@@ -99,16 +99,16 @@ func _get_data() -> Dictionary:
 		"direction": -camera.global_transform.basis.z  # Forward direction from the middle of the camera
 	}
 
-func _apply_data(data: Dictionary):
+func _apply_data(data: Dictionary) -> void:
 	# Reproduces the firing event on all peers.
-	var origin = data["origin"] as Vector3
-	var direction = data["direction"] as Vector3
+	var origin : Vector3 = data["origin"]
+	var direction : Vector3 = data["direction"]
 
 	# Perform the raycast from origin in the given direction.
-	var space_state = get_world_3d().direct_space_state
+	var space_state := get_world_3d().direct_space_state
 
 	# Create a PhysicsRayQueryParameters3D object.
-	var ray_params = PhysicsRayQueryParameters3D.new()
+	var ray_params := PhysicsRayQueryParameters3D.new()
 	ray_params.from = origin
 	ray_params.to = origin + direction * max_distance
 
@@ -116,7 +116,7 @@ func _apply_data(data: Dictionary):
 	ray_params.collision_mask = collision_mask
 	ray_params.exclude = exclude
 
-	var result = space_state.intersect_ray(ray_params)
+	var result := space_state.intersect_ray(ray_params)
 
 	if result:
 		# Handle the hit result, such as spawning hit effects.
@@ -129,7 +129,7 @@ func _is_reconcilable(request_data: Dictionary, local_data: Dictionary) -> bool:
 	# Always reconcilable
 	return true
 
-func _reconcile(local_data: Dictionary, remote_data: Dictionary):
+func _reconcile(local_data: Dictionary, remote_data: Dictionary) -> void:
 	# Nothing to do on reconcile
 	pass
 
@@ -137,7 +137,7 @@ func _reconcile(local_data: Dictionary, remote_data: Dictionary):
 ## [br][br]
 ## The parameter is the result of a
 ## [method PhysicsDirectSpaceState3D.intersect_ray] call.
-func _on_hit(result: Dictionary):
+func _on_hit(result: Dictionary) -> void:
 	if result.collider.is_in_group('player'):
 		if result.collider == get_parent():
 			print("collider detected self, ignored")
@@ -156,19 +156,19 @@ func _on_hit(result: Dictionary):
 
 
 ## Override to implement firing effects, like muzzle flash or sound.
-func _on_fire():
+func _on_fire() -> void:
 	# Implement firing effect logic here.
 	#laser.get_active_material(0).albedo_color.a = 1.0
 	
 	pass
 
 
-func _tick(_delta: float, _t: int):
+func _tick(_delta: float, _t: int) -> void:
 	if input.is_firing:
 		fire()
 		#identifier_laser.visible = true
 
-func _rollback_tick(delta, _tick, _is_fresh):
+func _rollback_tick(delta: float, tick: float, is_fresh: bool) -> void:
 	if input.is_firing:
 		identifier_laser_scaler.visible = true
 	else:
@@ -220,7 +220,7 @@ func _process(_delta: float) -> void:
 
 func shoot_laser() -> void:
 	if ray_cast.is_colliding():
-		var collider = ray_cast.get_collider()
+		var collider := ray_cast.get_collider()
 		if collider == self:
 			return
 		print(str(multiplayer.get_unique_id()) + " shot " + str(collider))
@@ -231,9 +231,9 @@ func shoot_laser() -> void:
 				collider.hit_by_bullet()
 
 func animate_hitmarker() -> void:
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(crosshair, "self_modulate", Color("ffffff"), 0.2 ).from(Color("ff0000"))
-	var tween_diagonal = create_tween()
+	var tween_diagonal := create_tween()
 	tween_diagonal.tween_property(hitmarker, "self_modulate", Color("ffffff00"), 0.2 ).from(Color("ff0000"))
 	
 #if Input.is_action_just_pressed("shoot" + string_p2):

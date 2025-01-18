@@ -7,13 +7,13 @@ static var _animals: PackedStringArray
 static func _pick_random(from: PackedStringArray) -> String:
 	return from[randi_range(0, from.size()-1)]
 
-static func name():
+static func name() -> String:
 	return ("%s %s" % [
 		NameProvider._pick_random(NameProvider._adjectives),
 		NameProvider._pick_random(NameProvider._animals)
 	]).capitalize()
 
-static func _static_init():
+static func _static_init() -> void:
 	# Source for adjectives: https://gist.github.com/hugsy/8910dc78d208e40de42deb29e62df913
 	# Source for animals: https://gist.github.com/atduskgreg/3cf8ef48cb0d29cf151bedad81553a54
 

@@ -1,4 +1,4 @@
 extends LineEdit
 
-func _ready():
+func _ready() -> void:
 	text = NameProvider.name()

@@ -1,29 +1,73 @@
-[gd_scene load_steps=13 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=21 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="MeshLibrary" uid="uid://do0y7f0sy12jg" path="res://examples/forest-brawl/models/forest-blocks.meshlib" id="1_124j6"]
 [ext_resource type="PackedScene" uid="uid://ph7hnpp04yym" path="res://Assets/art tron installation modernbooth/tron_loop.tscn" id="1_721ry"]
-[ext_resource type="PackedScene" path="res://Assets/high res terrain with arch/scene.gltf" id="1_vi0io"]
+[ext_resource type="PackedScene" uid="uid://cg283qn4ypago" path="res://Assets/old_church_modeling_-_interior_scene/scene.gltf" id="1_h3hb0"]
+[ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
+[ext_resource type="PackedScene" uid="uid://1jwetsgk020t" path="res://Assets/stylized nature glTF/Clover_1.gltf" id="2_u0hse"]
+[ext_resource type="PackedScene" uid="uid://c3us0jbxmicxt" path="res://Assets/stylized nature glTF/Clover_2.gltf" id="3_hsu3i"]
 [ext_resource type="PackedScene" uid="uid://c12hb5btenkcy" path="res://examples/forest-brawl/scenes/doodads/clouds-1.tscn" id="3_ucvrj"]
 [ext_resource type="PackedScene" uid="uid://c5l8x303sjqhs" path="res://examples/forest-brawl/scenes/doodads/clouds-2.tscn" id="4_dfl7h"]
+[ext_resource type="PackedScene" uid="uid://cchjgva0fk14l" path="res://Assets/stylized nature glTF/CommonTree_1.gltf" id="4_th181"]
 [ext_resource type="PackedScene" uid="uid://dq14vitb32x5p" path="res://examples/forest-brawl/scenes/doodads/clouds-3.tscn" id="5_doyli"]
+[ext_resource type="PackedScene" uid="uid://b8vejs1fblr38" path="res://Assets/stylized nature glTF/CommonTree_2.gltf" id="5_m53c2"]
 [ext_resource type="Sky" uid="uid://b5d0f7g6xkjqy" path="res://Assets/pink vaporwave sky.tres" id="6_2dn2o"]
+[ext_resource type="PackedScene" uid="uid://byhm78ltnc2uy" path="res://Assets/stylized nature glTF/CommonTree_3.gltf" id="6_s7s7n"]
 [ext_resource type="Script" path="res://examples/forest-brawl/scripts/cloud-area3d.gd" id="6_ymimw"]
 [ext_resource type="PackedScene" uid="uid://cjavt41cokqv5" path="res://examples/forest-brawl/scenes/moving-platform.tscn" id="7_fuq03"]
+[ext_resource type="PackedScene" uid="uid://ch236kny57t3g" path="res://Assets/stylized nature glTF/CommonTree_5.gltf" id="7_w1ony"]
+[ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
 
 [sub_resource type="Environment" id="Environment_c7ydc"]
 background_mode = 2
 sky = ExtResource("6_2dn2o")
+ambient_light_source = 3
+ambient_light_color = Color(0.60933, 0.60933, 0.60933, 1)
+ambient_light_sky_contribution = 0.3
 tonemap_mode = 2
 glow_enabled = true
+fog_light_color = Color(0.297534, 0.603346, 0.64733, 1)
+fog_light_energy = 0.25
+fog_sun_scatter = 0.06
+fog_height = 296.67
+volumetric_fog_density = 0.01
+volumetric_fog_emission = Color(0.231373, 0.560784, 0.662745, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
 
 [node name="Three Peaks Map" type="Node3D"]
 
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_vi0io")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -116.56, -47.13)
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41464, 0, 0)
+
+[node name="Bush_Common2" parent="Node3D" instance=ExtResource("1_sm4b2")]
+transform = Transform3D(-0.285287, 0, 0.958442, 0, 1, 0, -0.958442, 0, -0.285287, 0, 3.00967, 0)
+
+[node name="Clover_12" parent="Node3D" instance=ExtResource("2_u0hse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923964, 0)
+
+[node name="Clover_22" parent="Node3D" instance=ExtResource("3_hsu3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.922614, 1.03667, 0)
+
+[node name="CommonTree_12" parent="Node3D" instance=ExtResource("4_th181")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.49611, 0, 0)
+
+[node name="CommonTree_22" parent="Node3D" instance=ExtResource("5_m53c2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.54579, 0, 0)
+
+[node name="CommonTree_32" parent="Node3D" instance=ExtResource("6_s7s7n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.42312, 1.08444, 0)
+
+[node name="CommonTree_52" parent="Node3D" instance=ExtResource("7_w1ony")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.71576)
+
+[node name="CommonTree_42" parent="Node3D" instance=ExtResource("8_ty8xa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.11397, -0.536468, 2.66524)
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_h3hb0")]
+transform = Transform3D(-1.74846e-07, 0, 4, 0, 4, 0, -4, 0, -1.74846e-07, 0, 57.9476, -153.18)
 
 [node name="TronLoop" parent="." instance=ExtResource("1_721ry")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -33.4061, 0, 0)
@@ -44,9 +88,11 @@ visible = false
 
 [node name="Moving Platform" parent="." instance=ExtResource("7_fuq03")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -6)
+visible = false
 
 [node name="Moving Platform2" parent="." instance=ExtResource("7_fuq03")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+visible = false
 
 [node name="Target" parent="Moving Platform2" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
@@ -55,15 +101,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
 [node name="Powerup" parent="Powerups" instance=ExtResource("2_4e2nk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -17)
+visible = false
 
 [node name="Powerup2" parent="Powerups" instance=ExtResource("2_4e2nk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -23)
+visible = false
 
 [node name="Powerup3" parent="Powerups" instance=ExtResource("2_4e2nk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 5, 11.5)
+visible = false
 
 [node name="Powerup4" parent="Powerups" instance=ExtResource("2_4e2nk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3, 10)
+visible = false
 
 [node name="Spawn Points" type="Node" parent="."]
 
@@ -88,13 +138,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 [node name="Environment" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
-transform = Transform3D(0.5, 0.612372, -0.612372, 0, 0.707107, 0.707107, 0.866025, -0.353553, 0.353553, -6.7361, 8.77817, 3.88909)
+transform = Transform3D(0.5, 0.612372, -0.612373, 0, 0.707107, 0.707106, 0.866025, -0.353553, 0.353554, -6.7361, 429.037, 3.88909)
 shadow_enabled = true
 directional_shadow_split_2 = 0.15
 directional_shadow_blend_splits = true
 directional_shadow_max_distance = 256.0
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" groups=["WorldEnvironment"]]
 environment = SubResource("Environment_c7ydc")
 
 [node name="Area3D" type="Area3D" parent="."]
