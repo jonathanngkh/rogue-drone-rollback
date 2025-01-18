@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cwh2p0qb5872o"]
+[gd_scene load_steps=21 format=3 uid="uid://cwh2p0qb5872o"]
 
 [ext_resource type="PackedScene" uid="uid://d1544gxqaoptc" path="res://examples/forest-brawl/maps/three-peaks.tscn" id="1_xksrt"]
 [ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="3_3rx0j"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://ojh5xofoserg" path="res://examples/forest-brawl/scenes/score_screen.tscn" id="14_85lvt"]
 [ext_resource type="Script" path="res://examples/forest-brawl/scripts/settings/fullscreen-checkbutton.gd" id="14_h1iqv"]
 [ext_resource type="Script" path="res://examples/forest-brawl/scripts/settings/volume-slider.gd" id="16_6pky3"]
+[ext_resource type="PackedScene" uid="uid://t2yh4jl8iyrx" path="res://Assets/Cloud/cloud_sea.tscn" id="19_jfkgm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l686d"]
 font_size = 64
@@ -372,6 +373,9 @@ vertical_alignment = 1
 [node name="Score Screen" parent="UI" instance=ExtResource("14_85lvt")]
 visible = false
 layout_mode = 1
+
+[node name="CloudSea" parent="." instance=ExtResource("19_jfkgm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.787, -65.4331, 27.4909)
 
 [connection signal="pressed" from="UI/Network Popup/LAN/Actions Row/Host Only Button" to="UI/Network Popup/LAN Bootstrapper" method="host_only"]
 [connection signal="pressed" from="UI/Network Popup/LAN/Actions Row/Host Button" to="UI/Network Popup/LAN Bootstrapper" method="host"]
