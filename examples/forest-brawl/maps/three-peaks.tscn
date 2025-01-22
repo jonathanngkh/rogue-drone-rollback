@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=24 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -14,38 +14,32 @@
 [ext_resource type="PackedScene" uid="uid://cjavt41cokqv5" path="res://examples/forest-brawl/scenes/moving-platform.tscn" id="7_fuq03"]
 [ext_resource type="PackedScene" uid="uid://ch236kny57t3g" path="res://Assets/stylized nature glTF/CommonTree_5.gltf" id="7_w1ony"]
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
-[ext_resource type="Texture2D" uid="uid://dqmnnpw22w052" path="res://Assets/AllSkyFree_Sky_ColdSunset_Equirect.png" id="15_nhynt"]
+[ext_resource type="Material" uid="uid://bskt8k32exvay" path="res://Assets/blue pink sky.tres" id="15_q43w4"]
+[ext_resource type="PackedScene" uid="uid://t2yh4jl8iyrx" path="res://Assets/Cloud/cloud_sea.tscn" id="16_t63gl"]
+[ext_resource type="PackedScene" uid="uid://cxv7ycc58i8or" path="res://Assets/barrier_sphere.tscn" id="17_e4l60"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6u86p"]
-sky_top_color = Color(1.71345e-05, 0.491534, 0.887159, 1)
-sky_horizon_color = Color(1, 0.465834, 0.441199, 1)
-sky_curve = 0.0750001
-sky_cover = ExtResource("15_nhynt")
-sky_cover_modulate = Color(1, 1, 1, 0.215686)
-ground_bottom_color = Color(0.106963, 0.231964, 0.372123, 1)
-ground_horizon_color = Color(1, 0.465292, 0.445193, 1)
-sun_angle_max = 201.28
-sun_curve = 0.0069515
-use_debanding = false
-
-[sub_resource type="Sky" id="Sky_655xc"]
-sky_material = SubResource("ProceduralSkyMaterial_6u86p")
+[sub_resource type="Sky" id="Sky_lmeda"]
+sky_material = ExtResource("15_q43w4")
 
 [sub_resource type="Environment" id="Environment_c7ydc"]
 background_mode = 2
-sky = SubResource("Sky_655xc")
-sky_rotation = Vector3(0, 4.74904, 0)
+sky = SubResource("Sky_lmeda")
+sky_rotation = Vector3(0, -6.28319, 0)
 ambient_light_source = 3
 ambient_light_color = Color(0.60933, 0.60933, 0.60933, 1)
 tonemap_mode = 2
 glow_enabled = true
-fog_light_color = Color(0.297534, 0.603346, 0.64733, 1)
-fog_light_energy = 0.25
-fog_sun_scatter = 0.06
-fog_height = 296.67
+fog_mode = 1
+fog_light_color = Color(0.0331806, 0.111735, 0.201269, 1)
+fog_sky_affect = 0.775
+fog_height = 8.5
+fog_height_density = 16.0
+fog_depth_curve = 2.0
+fog_depth_begin = 982.0
+fog_depth_end = 982.0
 volumetric_fog_density = 0.0079
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8xcl"]
@@ -229,7 +223,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 [node name="Environment" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
-transform = Transform3D(0.414693, 0.64344, -0.64344, -0.838582, 0.544758, 0.00429612, 0.353283, 0.537796, 0.765485, -6.7361, 429.037, 3.88909)
+transform = Transform3D(-0.556016, -0.811042, -0.181817, 0.37883, -0.441989, 0.813101, -0.73982, 0.383219, 0.553001, -6.7361, 429.037, 3.88909)
 shadow_enabled = true
 directional_shadow_split_2 = 0.15
 directional_shadow_blend_splits = true
@@ -246,5 +240,10 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_yec6m")
+
+[node name="CloudSea" parent="." instance=ExtResource("16_t63gl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.787, -65.4331, 27.4909)
+
+[node name="BarrierSphere" parent="." instance=ExtResource("17_e4l60")]
 
 [editable path="Moving Platform2"]

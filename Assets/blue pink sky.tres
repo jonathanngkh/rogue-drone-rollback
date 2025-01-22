@@ -1,0 +1,15 @@
+[gd_resource type="ProceduralSkyMaterial" load_steps=2 format=3 uid="uid://bskt8k32exvay"]
+
+[ext_resource type="Texture2D" uid="uid://dqmnnpw22w052" path="res://Assets/AllSkyFree_Sky_ColdSunset_Equirect.png" id="1_sq7pu"]
+
+[resource]
+sky_top_color = Color(1.71345e-05, 0.491534, 0.887159, 1)
+sky_horizon_color = Color(1, 0.465834, 0.441199, 1)
+sky_curve = 0.0750001
+sky_cover = ExtResource("1_sq7pu")
+sky_cover_modulate = Color(1, 1, 1, 0.215686)
+ground_bottom_color = Color(0.106963, 0.231964, 0.372123, 1)
+ground_horizon_color = Color(0.991986, 0.461073, 0.419596, 1)
+sun_angle_max = 201.28
+sun_curve = 0.0069515
+use_debanding = false

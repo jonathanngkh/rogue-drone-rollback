@@ -21,7 +21,6 @@ material = SubResource("StandardMaterial3D_lqkin")
 size = Vector2(50, 50)
 
 [node name="Cloud" type="GPUParticles3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 visibility_range_fade_mode = 1
 amount = 30
 lifetime = 600.0
@@ -30,7 +29,3 @@ randomness = 1.0
 visibility_aabb = AABB(-50, -30, -50, 100, 80, 100)
 process_material = SubResource("ParticleProcessMaterial_kipaj")
 draw_pass_1 = SubResource("QuadMesh_lc1b3")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.993771, -0.0299479, 0.107342, 0.110443, -0.136036, 0.984529, -0.0148822, 0.990251, 0.138496, -3.69973, 102.114, 19.8175)
-visible = false

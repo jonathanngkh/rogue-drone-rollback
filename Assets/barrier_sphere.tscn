@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxv7ycc58i8or"]
+
+[ext_resource type="Shader" path="res://Assets/barrier shader.gdshader" id="1_upgjx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7jf6"]
+render_priority = 0
+shader = ExtResource("1_upgjx")
+shader_parameter/hex_size = Vector2(0.05, 0.07)
+shader_parameter/scan_color = Color(2, 0.46, 0.247, 1)
+shader_parameter/scan_line_size = 0.001
+
+[sub_resource type="SphereMesh" id="SphereMesh_bmkjf"]
+radius = 800.0
+height = 1600.0
+
+[node name="BarrierSphere" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283327, -0.0444478, -1.25515)
+material_overlay = SubResource("ShaderMaterial_a7jf6")
+transparency = 1.0
+mesh = SubResource("SphereMesh_bmkjf")
