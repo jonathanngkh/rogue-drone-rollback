@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=23 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -14,39 +14,38 @@
 [ext_resource type="PackedScene" uid="uid://cjavt41cokqv5" path="res://examples/forest-brawl/scenes/moving-platform.tscn" id="7_fuq03"]
 [ext_resource type="PackedScene" uid="uid://ch236kny57t3g" path="res://Assets/stylized nature glTF/CommonTree_5.gltf" id="7_w1ony"]
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
-[ext_resource type="Material" uid="uid://bskt8k32exvay" path="res://Assets/blue pink sky.tres" id="15_q43w4"]
-[ext_resource type="PackedScene" uid="uid://t2yh4jl8iyrx" path="res://Assets/Cloud/cloud_sea.tscn" id="16_t63gl"]
-[ext_resource type="PackedScene" uid="uid://cxv7ycc58i8or" path="res://Assets/barrier_sphere.tscn" id="17_e4l60"]
+[ext_resource type="Sky" uid="uid://djaryo3ikg7ed" path="res://examples/forest-brawl/maps/three-peaks.tres" id="15_7dgig"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
 
-[sub_resource type="Sky" id="Sky_lmeda"]
-sky_material = ExtResource("15_q43w4")
-
 [sub_resource type="Environment" id="Environment_c7ydc"]
 background_mode = 2
-sky = SubResource("Sky_lmeda")
-sky_rotation = Vector3(0, -6.28319, 0)
+sky = ExtResource("15_7dgig")
 ambient_light_source = 3
 ambient_light_color = Color(0.60933, 0.60933, 0.60933, 1)
 tonemap_mode = 2
 glow_enabled = true
-fog_mode = 1
-fog_light_color = Color(0.0331806, 0.111735, 0.201269, 1)
-fog_sky_affect = 0.775
-fog_height = 8.5
-fog_height_density = 16.0
+fog_light_color = Color(0.130963, 0.337424, 0.38264, 1)
+fog_density = 0.0193
+fog_sky_affect = 0.056
 fog_depth_curve = 2.0
 fog_depth_begin = 982.0
 fog_depth_end = 982.0
 volumetric_fog_density = 0.0079
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8xcl"]
-albedo_color = Color(0.192157, 0.384314, 0.0980392, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_43amm"]
+frequency = 0.0228
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_abonc"]
+noise = SubResource("FastNoiseLite_43amm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mblrh"]
+albedo_color = Color(0.144063, 0.144063, 0.144063, 1)
+albedo_texture = SubResource("NoiseTexture2D_abonc")
 
 [sub_resource type="BoxMesh" id="BoxMesh_vdohw"]
-material = SubResource("StandardMaterial3D_w8xcl")
+material = SubResource("StandardMaterial3D_mblrh")
 size = Vector3(50, 1, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yec6m"]
@@ -56,6 +55,7 @@ size = Vector3(50, 1, 50)
 
 [node name="Vegetation" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41464, 0, 0)
+visible = false
 
 [node name="Bush_Common2" parent="Vegetation" instance=ExtResource("1_sm4b2")]
 transform = Transform3D(-0.285287, 0, 0.958442, 0, 1, 0, -0.958442, 0, -0.285287, 0, 0.790965, 4.3537)
@@ -240,10 +240,5 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_yec6m")
-
-[node name="CloudSea" parent="." instance=ExtResource("16_t63gl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.787, -65.4331, 27.4909)
-
-[node name="BarrierSphere" parent="." instance=ExtResource("17_e4l60")]
 
 [editable path="Moving Platform2"]

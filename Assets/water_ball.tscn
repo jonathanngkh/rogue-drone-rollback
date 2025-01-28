@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://bh4u0q6ify36a"]
+
+[ext_resource type="Material" uid="uid://64wmg4qkewu1" path="res://Assets/toon water material overlay.tres" id="1_8gequ"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y0kvp"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="SphereMesh" id="SphereMesh_si00t"]
+material = SubResource("StandardMaterial3D_y0kvp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_flbsb"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+spread = 10.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="SphereMesh" id="SphereMesh_rx7fs"]
+radius = 0.001
+height = 0.002
+
+[node name="WaterBall" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_overlay = ExtResource("1_8gequ")
+mesh = SubResource("SphereMesh_si00t")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_overlay = ExtResource("1_8gequ")
+amount = 16
+lifetime = 600.0
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_flbsb")
+draw_pass_1 = SubResource("SphereMesh_rx7fs")
+
+[node name="GPUParticlesAttractorSphere3D2" type="GPUParticlesAttractorSphere3D" parent="GPUParticles3D"]
+strength = 10.0
+attenuation = 0.116629
+radius = 0.5
