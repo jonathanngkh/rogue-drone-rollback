@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6od13qh4hqdu"]
+
+[ext_resource type="PackedScene" uid="uid://dfpmnsfs3lykp" path="res://Drone/drone edited origins.glb" id="1_ixt67"]
+[ext_resource type="PackedScene" uid="uid://diqrec1hr4dkb" path="res://Drone/drone_edited_origins.tscn" id="2_p0mk2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xyqc4"]
+albedo_color = Color(0, 0.362024, 0.780616, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_tq0f4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jib0o"]
+albedo_color = Color(0, 1.5, 0.19, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_heajc"]
+size = Vector3(0.01, 0.01, 0.4)
+
+[node name="RadarGlobe" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_xyqc4")
+transparency = 0.77
+mesh = SubResource("SphereMesh_tq0f4")
+
+[node name="drone edited origins2" parent="MeshInstance3D" instance=ExtResource("1_ixt67")]
+transform = Transform3D(-0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0, -0.0514003, -0.00861722)
+
+[node name="drone edited origins" parent="MeshInstance3D" instance=ExtResource("2_p0mk2")]
+transform = Transform3D(-0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0.231318, 0.283334, 0.239447)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.739572, -0.454975, 0.496014, 0, 0.736935, 0.675963, -0.673077, -0.499924, 0.545017, 0.116051, 0.174202, 0.129687)
+material_overlay = SubResource("StandardMaterial3D_jib0o")
+mesh = SubResource("BoxMesh_heajc")
