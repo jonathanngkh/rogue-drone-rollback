@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=27 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://ch236kny57t3g" path="res://Assets/stylized nature glTF/CommonTree_5.gltf" id="7_w1ony"]
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
 [ext_resource type="Sky" uid="uid://djaryo3ikg7ed" path="res://examples/forest-brawl/maps/three-peaks.tres" id="15_7dgig"]
+[ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
+[ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="17_n1ogk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
@@ -50,6 +52,26 @@ size = Vector3(50, 1, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yec6m"]
 size = Vector3(50, 1, 50)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4s2ob"]
+render_priority = 0
+shader = ExtResource("16_aua6h")
+shader_parameter/outlineColor = Color(0, 0, 0, 0.78)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.3
+shader_parameter/min_thickness = 0.5
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_4c27i"]
+material = SubResource("ShaderMaterial_4s2ob")
+flip_faces = true
+size = Vector2(2, 2)
 
 [node name="Three Peaks Map" type="Node3D"]
 
@@ -240,5 +262,12 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_yec6m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_4c27i")
+
+[node name="Drone" parent="." instance=ExtResource("17_n1ogk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.198738, 0.82873, -3.06838)
 
 [editable path="Moving Platform2"]
