@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://040ih2loi7hj"]
+
+[ext_resource type="Shader" path="res://Assets/cotton cloud shader.gdshader" id="1_hhrdy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k518m"]
+render_priority = 0
+shader = ExtResource("1_hhrdy")
+shader_parameter/curve_strength = -19.01
+shader_parameter/stretch = 1.327
+shader_parameter/height_scale = 10.19
+shader_parameter/wave_speed = 0.1
+shader_parameter/upper_transparency = 0.67
+shader_parameter/global_transparency = 0.9
+shader_parameter/time_factor = Vector2(2, 3)
+shader_parameter/uv1_scale = Vector3(2, 1.5, 1.2)
+shader_parameter/uv1_offset = null
+shader_parameter/color1 = Color(0.78, 0.91, 0.93, 1)
+shader_parameter/color2 = Color(0.71, 0.89, 0.95, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1sx5m"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ip3t0"]
+material = SubResource("ShaderMaterial_1sx5m")
+size = Vector2(100, 100)
+subdivide_width = 25
+subdivide_depth = 20
+orientation = 1
+
+[node name="CloudSeaShaderBased" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_k518m")
+mesh = SubResource("QuadMesh_ip3t0")

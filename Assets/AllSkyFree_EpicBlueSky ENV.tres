@@ -1,0 +1,28 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://cpbh6inbywxv6"]
+
+[ext_resource type="Texture2D" uid="uid://r072qe2xn7r1" path="res://Assets/AllSkyFree_Sky_EpicBlueSunset_Equirect.png" id="1_6f6r0"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d1kuk"]
+panorama = ExtResource("1_6f6r0")
+
+[sub_resource type="Sky" id="Sky_7ttfb"]
+sky_material = SubResource("PanoramaSkyMaterial_d1kuk")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_7ttfb")
+ssao_radius = 0.01
+ssao_intensity = 4.3
+ssil_radius = 0.01
+glow_enabled = true
+glow_intensity = 1.86
+glow_strength = 0.87
+glow_bloom = 0.02
+glow_hdr_threshold = 0.44
+fog_enabled = true
+fog_sun_scatter = 0.26
+fog_density = 0.001
+fog_aerial_perspective = 0.753
+fog_depth_curve = 2.0
+fog_depth_begin = 0.0
+fog_depth_end = 2592.6
