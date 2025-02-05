@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=34 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -17,20 +17,14 @@
 [ext_resource type="Environment" uid="uid://cpbh6inbywxv6" path="res://Assets/AllSkyFree_EpicBlueSky ENV.tres" id="15_1aqcr"]
 [ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
 [ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="17_n1ogk"]
+[ext_resource type="Shader" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
 [ext_resource type="PackedScene" uid="uid://040ih2loi7hj" path="res://Assets/cloud_sea_shader_based.tscn" id="18_mg0mw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_43amm"]
-frequency = 0.0228
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_abonc"]
-noise = SubResource("FastNoiseLite_43amm")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mblrh"]
-albedo_color = Color(0.144063, 0.144063, 0.144063, 1)
-albedo_texture = SubResource("NoiseTexture2D_abonc")
+albedo_color = Color(0.919164, 0.607983, 0.485996, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_vdohw"]
 material = SubResource("StandardMaterial3D_mblrh")
@@ -39,7 +33,7 @@ size = Vector3(50, 1, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_yec6m"]
 size = Vector3(50, 1, 50)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4s2ob"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ve6o"]
 render_priority = 0
 shader = ExtResource("16_aua6h")
 shader_parameter/outlineColor = Color(0, 0, 0, 0.968)
@@ -56,7 +50,23 @@ shader_parameter/grazing_angle_modulation_factor = 50.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_4c27i"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_4s2ob")
+material = SubResource("ShaderMaterial_6ve6o")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qvtfy"]
+render_priority = 0
+shader = ExtResource("18_gx0o6")
+shader_parameter/zNear = 90.0
+shader_parameter/zFar = 100.0
+shader_parameter/outlineThickness = 1.5
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/wiggleFrequency = 0.1
+shader_parameter/wiggleAmplitude = 0.68
+
+[sub_resource type="QuadMesh" id="QuadMesh_swkwh"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_qvtfy")
 flip_faces = true
 size = Vector2(2, 2)
 
@@ -284,11 +294,15 @@ skeleton = NodePath("../..")
 shape = SubResource("BoxShape3D_yec6m")
 
 [node name="SobelShader" type="MeshInstance3D" parent="."]
+visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_4c27i")
 
 [node name="Drone" parent="." instance=ExtResource("17_n1ogk")]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -0.349258, 20.2661, -0.885111)
+
+[node name="MoebiusShader" parent="Drone/Node3D/Camera3D" index="1"]
+mesh = SubResource("QuadMesh_swkwh")
 
 [node name="Laser" parent="Drone/Scaler" index="0"]
 mesh = SubResource("CylinderMesh_vn27i")
@@ -308,7 +322,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_gsiua")
 transform = Transform3D(0.0833851, 0.62246, -0.778197, -0.066318, 0.782652, 0.618917, 0.994308, 0, 0.106542, 2.53326, 4.73631, -0.854708)
 
 [node name="CloudSeaShaderBased" parent="." instance=ExtResource("18_mg0mw")]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, -558.44, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -83.904, 0)
 
 [editable path="Moving Platform2"]
 [editable path="Drone"]
