@@ -70,8 +70,17 @@ void vertex() {
 	}
 }
 
-// --- FRAGMENT FUNCTION: Apply Clouds & Transparency ---
+// --- FRAGMENT FUNCTION: Apply Clouds & Transparency with Circular Mask ---
 void fragment() {
+	// Compute distance from center (circular mask)
+	vec2 uv_centered = (UV - vec2(0.5)) * 2.0;
+	float dist = length(uv_centered);
+
+	// Circular masking: Discard fragments outside the radius
+	if (dist > 1.0) {
+		discard;
+	}
+
 	ALBEDO = COLOR.xyz;
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo, base_uv);

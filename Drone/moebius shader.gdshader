@@ -1,3 +1,4 @@
+// By tlaverne https://godotshaders.com/shader/moebius-shader/
 shader_type spatial;
 render_mode unshaded;
 

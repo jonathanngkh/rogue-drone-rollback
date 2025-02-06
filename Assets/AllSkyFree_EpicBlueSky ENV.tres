@@ -1,12 +1,13 @@
-[gd_resource type="Environment" load_steps=4 format=3 uid="uid://cpbh6inbywxv6"]
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://cpbh6inbywxv6"]
 
-[ext_resource type="Texture2D" uid="uid://bo88jcvv8y4ig" path="res://Assets/AllSkyFree_Sky_ClearBlueSky_Equirect.png" id="1_o8iuo"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d1kuk"]
-panorama = ExtResource("1_o8iuo")
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ghiqm"]
+sky_top_color = Color(0.155695, 0.427569, 1, 1)
+sky_horizon_color = Color(0.773727, 0.959767, 1, 1)
+ground_bottom_color = Color(0.772549, 0.960784, 1, 1)
+ground_horizon_color = Color(0.772549, 0.960784, 1, 1)
 
 [sub_resource type="Sky" id="Sky_7ttfb"]
-sky_material = SubResource("PanoramaSkyMaterial_d1kuk")
+sky_material = SubResource("ProceduralSkyMaterial_ghiqm")
 
 [resource]
 background_mode = 2
@@ -18,11 +19,12 @@ glow_enabled = true
 glow_intensity = 1.86
 glow_strength = 0.87
 glow_bloom = 0.02
-glow_hdr_threshold = 0.44
 fog_enabled = true
+fog_mode = 1
 fog_sun_scatter = 0.26
-fog_density = 0.001
+fog_density = 1.0
 fog_aerial_perspective = 0.753
-fog_depth_curve = 2.0
+fog_sky_affect = 0.29
+fog_depth_curve = 0.707104
 fog_depth_begin = 0.0
 fog_depth_end = 2592.6
