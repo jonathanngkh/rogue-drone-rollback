@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=41 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -18,22 +18,77 @@
 [ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
 [ext_resource type="PackedScene" uid="uid://7tiopyg7nwvv" path="res://Assets/stylized nature glTF/Rock_Medium_3.gltf" id="16_ihmum"]
 [ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="17_n1ogk"]
+[ext_resource type="Texture2D" uid="uid://btqr8c83h0g70" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_AO.png" id="17_u5hn3"]
+[ext_resource type="Shader" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
 [ext_resource type="PackedScene" uid="uid://040ih2loi7hj" path="res://Assets/cloud_sea_shader_based.tscn" id="18_mg0mw"]
+[ext_resource type="Texture2D" uid="uid://hp0ei0a18wbp" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_height.png" id="18_xf1s7"]
+[ext_resource type="Texture2D" uid="uid://c5nigtok8h3dc" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_normal.png" id="19_xbv26"]
+[ext_resource type="Texture2D" uid="uid://cw2ltl2x3t47d" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_roughness.png" id="20_oboem"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
 size = Vector3(240, 48, 120)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mblrh"]
 albedo_color = Color(0.919164, 0.607983, 0.485996, 1)
+albedo_texture = ExtResource("17_u5hn3")
+albedo_texture_force_srgb = true
+roughness_texture = ExtResource("20_oboem")
+normal_enabled = true
+normal_scale = 0.0
+normal_texture = ExtResource("19_xbv26")
+heightmap_enabled = true
+heightmap_texture = ExtResource("18_xf1s7")
 
 [sub_resource type="BoxMesh" id="BoxMesh_vdohw"]
+lightmap_size_hint = Vector2i(509, 273)
 material = SubResource("StandardMaterial3D_mblrh")
+uv2_padding = 4.61
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xioo8"]
+albedo_color = Color(1, 0.549002, 0.483204, 1)
+albedo_texture_force_srgb = true
+roughness_texture = ExtResource("20_oboem")
+normal_enabled = true
+normal_scale = 0.0
+normal_texture = ExtResource("19_xbv26")
+heightmap_enabled = true
+heightmap_texture = ExtResource("18_xf1s7")
+
+[sub_resource type="BoxMesh" id="BoxMesh_bm6oh"]
+lightmap_size_hint = Vector2i(509, 273)
+material = SubResource("StandardMaterial3D_xioo8")
+uv2_padding = 4.61
 size = Vector3(50, 1, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yec6m"]
 size = Vector3(50, 1, 50)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilsjl"]
+albedo_color = Color(1.34766e-06, 0.565625, 0.971458, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_32s47"]
+material = SubResource("StandardMaterial3D_ilsjl")
+size = Vector3(3, 3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm3pg"]
+albedo_color = Color(0.983945, 0.375672, 0.432451, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mv8ci"]
+material = SubResource("StandardMaterial3D_vm3pg")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wxfbt"]
+albedo_color = Color(0.845772, 0.469515, 0.874615, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_wlj05"]
+material = SubResource("StandardMaterial3D_wxfbt")
+size = Vector3(3, 3, 3)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6ve6o"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("16_aua6h")
 shader_parameter/outlineColor = Color(0, 0, 0, 0.968)
@@ -42,8 +97,8 @@ shader_parameter/normal_threshold = 0.5
 shader_parameter/normal_smoothing = 0.25
 shader_parameter/max_thickness = 1.5
 shader_parameter/min_thickness = 1.5
-shader_parameter/max_distance = 1000.0
-shader_parameter/min_distance = 1000.0
+shader_parameter/max_distance = 10000.0
+shader_parameter/min_distance = 10000.0
 shader_parameter/grazing_fresnel_power = 5.0
 shader_parameter/grazing_angle_mask_power = 1.0
 shader_parameter/grazing_angle_modulation_factor = 50.0
@@ -54,21 +109,24 @@ material = SubResource("ShaderMaterial_6ve6o")
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilsjl"]
-albedo_color = Color(1.34766e-06, 0.565625, 0.971458, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xrspg"]
+render_priority = 0
+shader = ExtResource("18_gx0o6")
+shader_parameter/zNear = 95.0
+shader_parameter/zFar = 100.0
+shader_parameter/outlineThickness = 0.6
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/wiggleFrequency = 0.08
+shader_parameter/wiggleAmplitude = 0.5
+shader_parameter/shadow_threshold = 0.2
+shader_parameter/depth_range = 5.0
 
-[sub_resource type="BoxMesh" id="BoxMesh_32s47"]
-material = SubResource("StandardMaterial3D_ilsjl")
-size = Vector3(3, 3, 3)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm3pg"]
-albedo_color = Color(0.975141, 0.286847, 0.375228, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_mv8ci"]
-material = SubResource("StandardMaterial3D_vm3pg")
-top_radius = 2.0
-bottom_radius = 2.0
-height = 3.0
+[sub_resource type="QuadMesh" id="QuadMesh_2qaci"]
+resource_local_to_scene = true
+lightmap_size_hint = Vector2i(12, 12)
+material = SubResource("ShaderMaterial_xrspg")
+flip_faces = true
+size = Vector2(2, 2)
 
 [node name="Three Peaks Map" type="Node3D"]
 
@@ -240,7 +298,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -14)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 
 [node name="Rock_Medium_32" parent="." instance=ExtResource("16_ihmum")]
-transform = Transform3D(50, 0, 0, 0, 122.487, 0, 0, 0, 50, 5.44438, -220.009, 60.0054)
+transform = Transform3D(-49.7371, 0, -5.12053, 0, 122.487, 0, 5.12053, 0, -49.7371, -18.543, -259.139, 115.689)
 
 [node name="Environment" type="Node" parent="."]
 
@@ -257,16 +315,16 @@ environment = ExtResource("15_1aqcr")
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+visible = false
 mesh = SubResource("BoxMesh_vdohw")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_bm6oh")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_yec6m")
-
-[node name="SobelShader" type="MeshInstance3D" parent="."]
-visible = false
-extra_cull_margin = 16384.0
-mesh = SubResource("QuadMesh_4c27i")
 
 [node name="Drone" parent="." instance=ExtResource("17_n1ogk")]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -0.349258, 1.56701, -0.885111)
@@ -279,10 +337,26 @@ mesh = SubResource("BoxMesh_32s47")
 transform = Transform3D(-0.0832826, -0.808257, 0.58291, -0.114318, 0.58883, 0.800132, -0.989947, 0, -0.141437, 9.73278, 3.77569, 1.795)
 mesh = SubResource("CylinderMesh_mv8ci")
 
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9677, -0.174661, 0.181799, 0.00734644, 0.740351, 0.67218, -0.251999, -0.649132, 0.717721, 18.2811, 3.77569, 2.19228)
+mesh = SubResource("PrismMesh_wlj05")
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.0833851, 0.62246, -0.778197, -0.066318, 0.782652, 0.618917, 0.994308, 0, 0.106542, 2.53326, 4.73631, -0.854708)
 
 [node name="CloudSeaShaderBased" parent="." instance=ExtResource("18_mg0mw")]
-transform = Transform3D(4.99476, 0.228582, -0.00855108, -0.228089, 4.99113, 0.191229, 0.0172782, -0.190639, 4.99633, 0, -271.078, 0)
+transform = Transform3D(4.99476, 0.228582, -0.00855108, -0.228089, 4.99113, 0.191229, 0.0172782, -0.190639, 4.99633, 0, -274.402, 0)
+
+[node name="CloudSeaShaderBased2" parent="." instance=ExtResource("18_mg0mw")]
+transform = Transform3D(0.998953, 0.0457166, -0.00171021, -0.0456178, 0.998227, 0.0382459, 0.00345564, -0.0381278, 0.999267, 0, -35.1616, 0)
+
+[node name="SobelShader" type="MeshInstance3D" parent="."]
+visible = false
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_4c27i")
+
+[node name="MoebiusShader" type="MeshInstance3D" parent="."]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_2qaci")
 
 [editable path="Moving Platform2"]

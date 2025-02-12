@@ -7,8 +7,8 @@ render_priority = 0
 shader = ExtResource("1_hhrdy")
 shader_parameter/curve_strength = 0.5
 shader_parameter/stretch = 1.0
-shader_parameter/height_scale = 30.0
-shader_parameter/wave_speed = 0.08
+shader_parameter/height_scale = 50.0
+shader_parameter/wave_speed = 0.02
 shader_parameter/upper_transparency = 0.99
 shader_parameter/global_transparency = 0.9
 shader_parameter/time_factor = Vector2(2, 3)
@@ -20,6 +20,7 @@ shader_parameter/color2 = Color(1, 1, 1, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1sx5m"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ip3t0"]
+lightmap_size_hint = Vector2i(5002, 5002)
 material = SubResource("ShaderMaterial_1sx5m")
 size = Vector2(1000, 1000)
 subdivide_width = 50

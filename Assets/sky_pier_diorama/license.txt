@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sky Pier Diorama
+* source:	https://sketchfab.com/3d-models/sky-pier-diorama-2a0177ba6dbd41baa8e7a349d4a5014c
+* author:	Braeden Wylam (https://sketchfab.com/bmwylam)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sky Pier Diorama" (https://sketchfab.com/3d-models/sky-pier-diorama-2a0177ba6dbd41baa8e7a349d4a5014c) by Braeden Wylam (https://sketchfab.com/bmwylam) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
