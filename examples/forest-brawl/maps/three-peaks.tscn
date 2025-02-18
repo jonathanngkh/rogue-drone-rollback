@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=42 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -16,13 +16,13 @@
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
 [ext_resource type="Environment" uid="uid://cpbh6inbywxv6" path="res://Assets/AllSkyFree_EpicBlueSky ENV.tres" id="15_1aqcr"]
 [ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
-[ext_resource type="PackedScene" uid="uid://7tiopyg7nwvv" path="res://Assets/stylized nature glTF/Rock_Medium_3.gltf" id="16_ihmum"]
 [ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="17_n1ogk"]
 [ext_resource type="Texture2D" uid="uid://btqr8c83h0g70" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_AO.png" id="17_u5hn3"]
 [ext_resource type="Shader" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
 [ext_resource type="PackedScene" uid="uid://040ih2loi7hj" path="res://Assets/cloud_sea_shader_based.tscn" id="18_mg0mw"]
 [ext_resource type="Texture2D" uid="uid://hp0ei0a18wbp" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_height.png" id="18_xf1s7"]
 [ext_resource type="Texture2D" uid="uid://c5nigtok8h3dc" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_normal.png" id="19_xbv26"]
+[ext_resource type="Texture2D" uid="uid://bvqmd781sfxh6" path="res://Assets/sabel dots texture.png" id="20_8hvgv"]
 [ext_resource type="Texture2D" uid="uid://cw2ltl2x3t47d" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_roughness.png" id="20_oboem"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4u8tk"]
@@ -45,15 +45,22 @@ material = SubResource("StandardMaterial3D_mblrh")
 uv2_padding = 4.61
 size = Vector3(50, 1, 50)
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fm2rx"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xioo8"]
 albedo_color = Color(1, 0.549002, 0.483204, 1)
-albedo_texture_force_srgb = true
+albedo_texture = ExtResource("20_8hvgv")
+roughness = 0.0
 roughness_texture = ExtResource("20_oboem")
+emission_energy_multiplier = 1.17
+emission_texture = SubResource("CompressedTexture2D_fm2rx")
 normal_enabled = true
 normal_scale = 0.0
 normal_texture = ExtResource("19_xbv26")
 heightmap_enabled = true
 heightmap_texture = ExtResource("18_xf1s7")
+uv1_scale = Vector3(4.54, 4.54, 4.54)
+uv1_offset = Vector3(0.78, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_bm6oh"]
 lightmap_size_hint = Vector2i(509, 273)
@@ -66,6 +73,11 @@ size = Vector3(50, 1, 50)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilsjl"]
 albedo_color = Color(1.34766e-06, 0.565625, 0.971458, 1)
+roughness = 0.49
+uv1_scale = Vector3(0.71, 0.71, 0.71)
+uv1_offset = Vector3(-2.03, 0.27, 0)
+uv1_triplanar_sharpness = 5.65686
+uv1_world_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_32s47"]
 material = SubResource("StandardMaterial3D_ilsjl")
@@ -73,6 +85,7 @@ size = Vector3(3, 3, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm3pg"]
 albedo_color = Color(0.983945, 0.375672, 0.432451, 1)
+roughness = 0.7
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_mv8ci"]
 material = SubResource("StandardMaterial3D_vm3pg")
@@ -114,11 +127,11 @@ render_priority = 0
 shader = ExtResource("18_gx0o6")
 shader_parameter/zNear = 95.0
 shader_parameter/zFar = 100.0
-shader_parameter/outlineThickness = 0.6
+shader_parameter/outlineThickness = 0.8
 shader_parameter/outlineColor = Color(0, 0, 0, 1)
 shader_parameter/wiggleFrequency = 0.08
 shader_parameter/wiggleAmplitude = 0.5
-shader_parameter/shadow_threshold = 0.2
+shader_parameter/shadow_threshold = 0.0
 shader_parameter/depth_range = 5.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_2qaci"]
@@ -297,9 +310,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -14)
 [node name="Spawn5" type="Node3D" parent="Spawn Points" groups=["Spawn Points"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 
-[node name="Rock_Medium_32" parent="." instance=ExtResource("16_ihmum")]
-transform = Transform3D(-49.7371, 0, -5.12053, 0, 122.487, 0, 5.12053, 0, -49.7371, -18.543, -259.139, 115.689)
-
 [node name="Environment" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
@@ -312,7 +322,7 @@ directional_shadow_max_distance = 256.0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" groups=["WorldEnvironment"]]
 environment = ExtResource("15_1aqcr")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="RigidBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 visible = false
@@ -330,25 +340,23 @@ shape = SubResource("BoxShape3D_yec6m")
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -0.349258, 1.56701, -0.885111)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.141437, 0, 0.989947, 0, 1, 0, -0.989947, 0, -0.141437, 14.9962, 3.77569, 6.43603)
+transform = Transform3D(-0.141437, 0, 0.989947, 0, 1, 0, -0.989947, 0, -0.141437, 2.3685, 3.77569, -14.8937)
 mesh = SubResource("BoxMesh_32s47")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.0832826, -0.808257, 0.58291, -0.114318, 0.58883, 0.800132, -0.989947, 0, -0.141437, 9.73278, 3.77569, 1.795)
+transform = Transform3D(-0.0832826, -0.808257, 0.58291, -0.114318, 0.58883, 0.800132, -0.989947, 0, -0.141437, -2.89492, 3.77569, -19.5347)
 mesh = SubResource("CylinderMesh_mv8ci")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.9677, -0.174661, 0.181799, 0.00734644, 0.740351, 0.67218, -0.251999, -0.649132, 0.717721, 18.2811, 3.77569, 2.19228)
+transform = Transform3D(0.9677, -0.174661, 0.181799, 0.00734644, 0.740351, 0.67218, -0.251999, -0.649132, 0.717721, 5.6534, 3.77569, -19.1374)
 mesh = SubResource("PrismMesh_wlj05")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.0833851, 0.62246, -0.778197, -0.066318, 0.782652, 0.618917, 0.994308, 0, 0.106542, 2.53326, 4.73631, -0.854708)
 
 [node name="CloudSeaShaderBased" parent="." instance=ExtResource("18_mg0mw")]
-transform = Transform3D(4.99476, 0.228582, -0.00855108, -0.228089, 4.99113, 0.191229, 0.0172782, -0.190639, 4.99633, 0, -274.402, 0)
-
-[node name="CloudSeaShaderBased2" parent="." instance=ExtResource("18_mg0mw")]
-transform = Transform3D(0.998953, 0.0457166, -0.00171021, -0.0456178, 0.998227, 0.0382459, 0.00345564, -0.0381278, 0.999267, 0, -35.1616, 0)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -359.411, 0)
+visible = false
 
 [node name="SobelShader" type="MeshInstance3D" parent="."]
 visible = false

@@ -32,3 +32,4 @@ fog_sky_affect = 0.0
 fog_depth_curve = 3.03144
 fog_depth_begin = 0.0
 fog_depth_end = 1682.3
+adjustment_enabled = true
