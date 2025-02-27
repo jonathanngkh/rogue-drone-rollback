@@ -19,17 +19,20 @@ var player_id: int = -1
 @onready var identifier_laser: MeshInstance3D = $IdentifierLaserScaler/IdentifierLaser
 @onready var you_died_overlay: TextureRect = $HUD/YouDied
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
-
+@onready var battery_level: Label = $HUD/BatteryLevel
 @onready var red_indicator: Node3D = $"Pivot/drone edited origins/root/node_id273/RedIndicator"
 
 @export var health := 5
 @export var bullet_speed := 60.0 # Bullet speed
+@export var battery : float = 100.0
+@export var battery_drain_multiplier : float = 0.4
+@export var laser_drain := 0.4
 
 @export var ramp_factor: float = 2.0 # Exponent for the exponential ramp
 @export var max_thrust := 100.0 # Maximum upward force (throttle)
-@export var max_yaw_speed := 5.0 # Maximum rotational speed for yaw
-@export var max_pitch_speed := 3.0 # Maximum rotational speed for pitch
-@export var max_roll_speed := 3.0 # Maximum rotational speed for roll
+@export var max_yaw_speed := 10.0 # Maximum rotational speed for yaw
+@export var max_pitch_speed := 6.0 # Maximum rotational speed for pitch
+@export var max_roll_speed := 6.0 # Maximum rotational speed for roll
 
 @export var friction_coefficient := 10 # Adjust this value to tune the friction intensity
 @export var drag_coefficient := 0.1 # Adjust this value to tune drag intensity
@@ -48,6 +51,14 @@ var is_zoom : bool = false
 @export var min_volume := -10  # Volume (dB) at zero throttle
 @export var max_volume := -5  # Volume (dB) at full throttle
 
+# Aggregated Inputs
+var input_dictionary : Dictionary = {
+	"pitch": 0,
+	"yaw": 0,
+	"roll": 0,
+	"throttle": 0
+}
+
 # Variables to track angular velocities
 var pitch_velocity: float = 0.0
 var yaw_velocity: float = 0.0
@@ -58,6 +69,7 @@ var string_p2 : String = ""
 var respawn_count: int = 0
 
 func _ready() -> void:
+	battery_level.text = str(int(battery))
 	#var vp = get_viewport()
 	#vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
 	_snap_to_spawn()
@@ -97,10 +109,15 @@ func _process(delta: float) -> void:
 		fpv_camera.fov = lerp(fpv_camera.fov, zoom_fov, zoom_speed * delta)
 	else:
 		fpv_camera.fov = lerp(fpv_camera.fov, default_fov, zoom_speed * delta)
-
-		# Adjust engine sound based on throttle input
-	update_engine_sound(input.throttle_input, input.yaw_input, input.pitch_input, input.roll_input)
 	
+	# Update the input dictionary
+	input_dictionary = get_input_dictionary(input.throttle_input, input.yaw_input, input.pitch_input, input.roll_input)
+	
+	# Adjust engine sound based on throttle input
+	update_engine_sound()
+	
+	# Update battery label
+	battery_level.text = str(int(battery))
 	# Play animation
 	drone_animation_player.play("throttle_forward")
 	drone_animation_player.speed_scale = 2 + input.throttle_input * 3
@@ -120,7 +137,10 @@ func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	else:
 		apply_friction(delta)
 		reset_orientation_to_neutral() # can use this for ez hover
-	
+		
+	# drain battery when firing laser
+	if input.is_firing:
+		battery -= laser_drain
 	# Start zoom
 	if input.is_zooming:
 		if not is_zoom:
@@ -150,6 +170,9 @@ func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	
 	# Apply angular drag to reduce angular velocities
 	apply_angular_drag(delta)
+	
+	# Drain battery
+	drain_battery()
 	
 	# Apply movement
 	velocity *= NetworkTime.physics_factor
@@ -251,21 +274,27 @@ func reset_orientation_to_neutral() -> void: # but 'smoothly'
 	# Apply the interpolated rotation
 	transform.basis = Basis(smooth_quat)
 
-
-
-
-func update_engine_sound(throttle_input: float, yaw_input: float, pitch_input: float, roll_input: float) -> void:
-	# Calculate pitch and volume based on throttle
-	#pitch_input = abs(pitch_input)
-	#yaw_input = abs(yaw_input)
-	#roll_input = abs(roll_input)
-	
+func get_input_dictionary(throttle_input: float, yaw_input: float, pitch_input: float, roll_input: float) -> Dictionary:
 	pitch_input = apply_exponential_ramp(abs(pitch_input))
 	yaw_input = apply_exponential_ramp(abs(yaw_input))
 	roll_input = apply_exponential_ramp(abs(roll_input))
-	throttle_input = apply_exponential_ramp(throttle_input)
-	var pitch : float = lerp(min_pitch, max_pitch, throttle_input * 1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
-	var volume : float = lerp(min_volume, max_volume, throttle_input*1.2+(yaw_input/2)+(pitch_input/2)+(roll_input/2))
+	throttle_input = apply_exponential_ramp(abs(throttle_input))
+	return {
+		"pitch": pitch_input,
+		"yaw": yaw_input,
+		"roll": roll_input,
+		"throttle": throttle_input,
+	}
+
+func drain_battery() -> void:
+	# battery drains based on how far sticks are pushed. half value for all except throttle since 4 motors involved.
+	battery -= battery_drain_multiplier * (input_dictionary["pitch"]/2 + input_dictionary["yaw"]/2 + input_dictionary["roll"]/2 + input_dictionary["throttle"])
+	
+
+func update_engine_sound() -> void:
+	# Audio pitch, not aerial pitch
+	var pitch : float = lerp(min_pitch, max_pitch, input_dictionary["throttle"] * 1.2+(input_dictionary["yaw"]/2)+(input_dictionary["pitch"]/2)+(input_dictionary["roll"]/2))
+	var volume : float = lerp(min_volume, max_volume, input_dictionary["throttle"]*1.2+(input_dictionary["yaw"]/2)+(input_dictionary["pitch"]/2)+(input_dictionary["roll"]/2))
 
 	# Apply pitch and volume to the engine sound
 	engine_sound.pitch_scale = pitch

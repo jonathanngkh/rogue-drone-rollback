@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d1544gxqaoptc"]
+[gd_scene load_steps=40 format=3 uid="uid://d1544gxqaoptc"]
 
 [ext_resource type="PackedScene" uid="uid://baql3gbmyb6pn" path="res://Assets/stylized nature glTF/Bush_Common.gltf" id="1_sm4b2"]
 [ext_resource type="PackedScene" uid="uid://ijqx6kjl3qf4" path="res://examples/forest-brawl/scenes/powerup.tscn" id="2_4e2nk"]
@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
 [ext_resource type="Environment" uid="uid://cpbh6inbywxv6" path="res://Assets/AllSkyFree_EpicBlueSky ENV.tres" id="15_1aqcr"]
 [ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
-[ext_resource type="PackedScene" uid="uid://cuhjk0ppis5lw" path="res://Drone/drone.tscn" id="17_n1ogk"]
 [ext_resource type="Texture2D" uid="uid://btqr8c83h0g70" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_AO.png" id="17_u5hn3"]
 [ext_resource type="Shader" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
 [ext_resource type="PackedScene" uid="uid://040ih2loi7hj" path="res://Assets/cloud_sea_shader_based.tscn" id="18_mg0mw"]
@@ -47,7 +46,7 @@ size = Vector3(50, 1, 50)
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fm2rx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xioo8"]
-albedo_color = Color(1, 0.549, 0.483, 1)
+albedo_color = Color(3.03224e-06, 0.686995, 0.500788, 1)
 roughness = 0.0
 roughness_texture = ExtResource("20_oboem")
 emission_energy_multiplier = 1.17
@@ -70,7 +69,7 @@ size = Vector3(50, 1, 50)
 size = Vector3(50, 1, 50)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilsjl"]
-albedo_color = Color(1.34766e-06, 0.565625, 0.971458, 1)
+albedo_color = Color(0, 0.566, 1, 1)
 roughness = 0.49
 uv1_scale = Vector3(0.71, 0.71, 0.71)
 uv1_offset = Vector3(-2.03, 0.27, 0)
@@ -312,6 +311,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, -0.0192672, 0.999814, 0, -0.999814, -0.0192672, 0, 0, 0)
+light_energy = 1.2
 shadow_enabled = true
 directional_shadow_split_2 = 0.15
 directional_shadow_blend_splits = true
@@ -335,9 +335,6 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 visible = false
 shape = SubResource("BoxShape3D_yec6m")
-
-[node name="Drone" parent="." instance=ExtResource("17_n1ogk")]
-transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -0.349258, 1.56701, -0.885111)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.141437, 0, 0.989947, 0, 1, 0, -0.989947, 0, -0.141437, 2.3685, 3.77569, -14.8937)
