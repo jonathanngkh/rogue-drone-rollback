@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode depth_draw_always, cull_disabled;
+render_mode depth_draw_always;
 
 uniform float curve_strength : hint_range(-100.0, 100.0) = 0.5; // Warping depth
 uniform float stretch : hint_range(0.0, 2.0) = 1.0; // Horizontal stretching
