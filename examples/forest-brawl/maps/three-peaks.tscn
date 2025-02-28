@@ -56,8 +56,7 @@ normal_scale = 0.0
 normal_texture = ExtResource("19_xbv26")
 heightmap_enabled = true
 heightmap_texture = ExtResource("18_xf1s7")
-uv1_scale = Vector3(4.54, 4.54, 4.54)
-uv1_offset = Vector3(0.78, 0, 0)
+uv1_scale = Vector3(20.49, 20.49, 20.49)
 
 [sub_resource type="BoxMesh" id="BoxMesh_bm6oh"]
 lightmap_size_hint = Vector2i(509, 273)
