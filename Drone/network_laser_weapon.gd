@@ -145,6 +145,11 @@ func _on_hit(result: Dictionary) -> void:
 		hit_marker_sound.play()
 		animate_hitmarker()
 		print(str(multiplayer.get_unique_id()) + " shot " + str(result.collider))
+	if result.collider.is_in_group('bullseye'):
+		result.collider.explode()
+		hit_marker_sound.play()
+		animate_hitmarker()
+		
 	# Implement hit effect logic here.
 	# var hit_position = result.position
 	# var hit_normal = result.normal
