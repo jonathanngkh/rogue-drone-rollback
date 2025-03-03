@@ -55,6 +55,7 @@ import/fbx/enabled=false
 
 "Brawler Spawner"=""
 WorldEnvironment=""
+bullseye=""
 
 [input]
 

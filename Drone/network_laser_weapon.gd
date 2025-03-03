@@ -138,7 +138,7 @@ func _reconcile(local_data: Dictionary, remote_data: Dictionary) -> void:
 ## The parameter is the result of a
 ## [method PhysicsDirectSpaceState3D.intersect_ray] call.
 func _on_hit(result: Dictionary) -> void:
-	if result.collider.is_in_group('player'):
+	if result.collider.is_in_group('player') or result.collider.is_in_group('bullseye'):
 		if result.collider == get_parent():
 			print("collider detected self, ignored")
 			return

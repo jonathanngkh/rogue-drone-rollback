@@ -5,10 +5,10 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k518m"]
 render_priority = 0
 shader = ExtResource("1_hhrdy")
-shader_parameter/curve_strength = -20.0
+shader_parameter/curve_strength = 20.0
 shader_parameter/stretch = 2.0
 shader_parameter/height_scale = 50.0
-shader_parameter/wave_speed = 0.02
+shader_parameter/wave_speed = 0.03
 shader_parameter/upper_transparency = 0.89
 shader_parameter/global_transparency = 0.9
 shader_parameter/time_factor = Vector2(2, 3)
