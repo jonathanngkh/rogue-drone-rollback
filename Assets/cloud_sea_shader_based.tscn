@@ -30,5 +30,6 @@ orientation = 1
 [node name="CloudSeaShaderBased" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 33
 material_override = SubResource("ShaderMaterial_k518m")
 mesh = SubResource("QuadMesh_ip3t0")

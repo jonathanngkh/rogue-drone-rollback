@@ -35,7 +35,7 @@ var player_id: int = -1
 @export var max_roll_speed := 6.0 # Maximum rotational speed for roll
 
 @export var friction_coefficient := 10 # Adjust this value to tune the friction intensity
-@export var drag_coefficient := 0.1 # Adjust this value to tune drag intensity
+@export var drag_coefficient := 0.5 # Adjust this value to tune drag intensity
 @export var angular_drag_coefficient := 0.1 # Adjust this to tune angular drag intensity
 
  # Reduce sensitivity to 50% while zoomed in
@@ -133,7 +133,7 @@ func _process(delta: float) -> void:
 func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * 1.2 * delta
 	else:
 		apply_friction(delta)
 		reset_orientation_to_neutral() # can use this for ez hover

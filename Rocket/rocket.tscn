@@ -30,6 +30,7 @@ motion_mode = 1
 script = ExtResource("1_ts73l")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+layers = 33
 material = SubResource("StandardMaterial3D_2384k")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -39,9 +40,6 @@ shape = SubResource("BoxShape3D_qt48c")
 amount = 16
 process_material = SubResource("ParticleProcessMaterial_6r37l")
 draw_pass_1 = SubResource("BoxMesh_ttl7h")
-
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
 
 [node name="ExplosionGroup" type="Node3D" parent="."]
 

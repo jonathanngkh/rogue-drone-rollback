@@ -311,6 +311,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 8, 12)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, -0.0192672, 0.999814, 0, -0.999814, -0.0192672, 0, 0, 0)
+layers = 33
 light_energy = 1.2
 shadow_enabled = true
 directional_shadow_split_2 = 0.15
@@ -329,6 +330,7 @@ mesh = SubResource("BoxMesh_vdohw")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D"]
+layers = 33
 mesh = SubResource("BoxMesh_bm6oh")
 skeleton = NodePath("../..")
 
@@ -363,6 +365,7 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_4c27i")
 
 [node name="MoebiusShader" type="MeshInstance3D" parent="."]
+layers = 33
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_2qaci")
 
