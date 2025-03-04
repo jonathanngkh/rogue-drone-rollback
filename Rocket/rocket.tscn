@@ -16,9 +16,8 @@ size = Vector3(0.5, 0.5, 0.5)
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fgt5k"]
 emission_shape = 2
 emission_sphere_radius = 1.0
-inherit_velocity_ratio = 1.0
 spread = 180.0
-initial_velocity_min = 20.0
+initial_velocity_min = 10.0
 initial_velocity_max = 20.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_e02pc"]
@@ -49,7 +48,7 @@ one_shot = true
 [node name="ExplosionParticles" type="GPUParticles3D" parent="ExplosionGroup"]
 emitting = false
 amount = 32
-lifetime = 2.0
+lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_fgt5k")
@@ -58,7 +57,7 @@ draw_pass_1 = SubResource("BoxMesh_e02pc")
 [node name="ExplosionParticles2" type="GPUParticles3D" parent="ExplosionGroup"]
 emitting = false
 amount = 32
-lifetime = 2.0
+lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_fgt5k")
@@ -67,7 +66,7 @@ draw_pass_1 = SubResource("BoxMesh_e02pc")
 [node name="ExplosionParticles3" type="GPUParticles3D" parent="ExplosionGroup"]
 emitting = false
 amount = 32
-lifetime = 2.0
+lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_fgt5k")
@@ -76,7 +75,7 @@ draw_pass_1 = SubResource("BoxMesh_e02pc")
 [node name="ExplosionParticles4" type="GPUParticles3D" parent="ExplosionGroup"]
 emitting = false
 amount = 32
-lifetime = 2.0
+lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_fgt5k")
@@ -85,7 +84,7 @@ draw_pass_1 = SubResource("BoxMesh_e02pc")
 [node name="ExplosionParticles5" type="GPUParticles3D" parent="ExplosionGroup"]
 emitting = false
 amount = 32
-lifetime = 2.0
+lifetime = 5.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_fgt5k")

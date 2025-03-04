@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var speed: float = 30.0
+@export var speed: float = 10.0
 @onready var player: Node3D = get_tree().get_first_node_in_group("player")
 var direction : Vector3
 var is_alive : bool = true

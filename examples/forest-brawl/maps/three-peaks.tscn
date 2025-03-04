@@ -367,6 +367,6 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_2qaci")
 
 [node name="Rocket" parent="." instance=ExtResource("23_ok1et")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 73.5893)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 3.45581)
 
 [editable path="Moving Platform2"]
