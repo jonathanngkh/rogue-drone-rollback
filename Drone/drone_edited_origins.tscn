@@ -134,9 +134,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b8y64"]
 _data = {
-"RESET": SubResource("Animation_n8gc7"),
-"throttle_forward": SubResource("Animation_c75k7"),
-"yaw_left": SubResource("Animation_jgxh4")
+&"RESET": SubResource("Animation_n8gc7"),
+&"throttle_forward": SubResource("Animation_c75k7"),
+&"yaw_left": SubResource("Animation_jgxh4")
 }
 
 [node name="drone edited origins" instance=ExtResource("1_gsbay")]

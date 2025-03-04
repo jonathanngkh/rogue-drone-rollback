@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://badtpsxn5lago"]
 
-[ext_resource type="Script" path="res://examples/shared/scripts/lan-bootstrapper.gd" id="1_dy86e"]
-[ext_resource type="Script" path="res://examples/shared/scripts/noray-bootstrapper.gd" id="2_fgck5"]
+[ext_resource type="Script" uid="uid://bksnniy3cj1nj" path="res://examples/shared/scripts/lan-bootstrapper.gd" id="1_dy86e"]
+[ext_resource type="Script" uid="uid://dtobjiol30itt" path="res://examples/shared/scripts/noray-bootstrapper.gd" id="2_fgck5"]
 
 [node name="Network Popup" type="TabContainer"]
 custom_minimum_size = Vector2(360, 240)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cxv7ycc58i8or"]
 
-[ext_resource type="Shader" path="res://Assets/barrier shader.gdshader" id="1_upgjx"]
+[ext_resource type="Shader" uid="uid://clj2yxmdi2cfy" path="res://Assets/barrier shader.gdshader" id="1_upgjx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a7jf6"]
 render_priority = 0

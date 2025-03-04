@@ -10,14 +10,14 @@
 [ext_resource type="PackedScene" uid="uid://dq14vitb32x5p" path="res://examples/forest-brawl/scenes/doodads/clouds-3.tscn" id="5_doyli"]
 [ext_resource type="PackedScene" uid="uid://b8vejs1fblr38" path="res://Assets/stylized nature glTF/CommonTree_2.gltf" id="5_m53c2"]
 [ext_resource type="PackedScene" uid="uid://byhm78ltnc2uy" path="res://Assets/stylized nature glTF/CommonTree_3.gltf" id="6_s7s7n"]
-[ext_resource type="Script" path="res://examples/forest-brawl/scripts/cloud-area3d.gd" id="6_ymimw"]
+[ext_resource type="Script" uid="uid://bdorhig7nnxq0" path="res://examples/forest-brawl/scripts/cloud-area3d.gd" id="6_ymimw"]
 [ext_resource type="PackedScene" uid="uid://cjavt41cokqv5" path="res://examples/forest-brawl/scenes/moving-platform.tscn" id="7_fuq03"]
 [ext_resource type="PackedScene" uid="uid://ch236kny57t3g" path="res://Assets/stylized nature glTF/CommonTree_5.gltf" id="7_w1ony"]
 [ext_resource type="PackedScene" uid="uid://bpkr85geuj4f4" path="res://Assets/stylized nature glTF/CommonTree_4.gltf" id="8_ty8xa"]
 [ext_resource type="Environment" uid="uid://cpbh6inbywxv6" path="res://Assets/AllSkyFree_EpicBlueSky ENV.tres" id="15_1aqcr"]
-[ext_resource type="Shader" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
+[ext_resource type="Shader" uid="uid://dpq5vgcyfxy5s" path="res://Assets/hq sobel shader.gdshader" id="16_aua6h"]
 [ext_resource type="Texture2D" uid="uid://btqr8c83h0g70" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_AO.png" id="17_u5hn3"]
-[ext_resource type="Shader" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
+[ext_resource type="Shader" uid="uid://lp8vt5t7ioml" path="res://Drone/moebius shader.gdshader" id="18_gx0o6"]
 [ext_resource type="PackedScene" uid="uid://040ih2loi7hj" path="res://Assets/cloud_sea_shader_based.tscn" id="18_mg0mw"]
 [ext_resource type="Texture2D" uid="uid://hp0ei0a18wbp" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_height.png" id="18_xf1s7"]
 [ext_resource type="Texture2D" uid="uid://c5nigtok8h3dc" path="res://Assets/uhl3d stylized sand Textures/UHL3D-Stylized_Sand_with_Rocks_01_normal.png" id="19_xbv26"]
@@ -367,6 +367,6 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_2qaci")
 
 [node name="Rocket" parent="." instance=ExtResource("23_ok1et")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 3.45581)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 15.0704)
 
 [editable path="Moving Platform2"]

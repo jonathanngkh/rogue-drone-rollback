@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cjbv4usv746w0"]
 
-[ext_resource type="Script" path="res://Rocket/rocket.gd" id="1_ts73l"]
+[ext_resource type="Script" uid="uid://dyyluofo2slsf" path="res://Rocket/rocket.gd" id="1_ts73l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2384k"]
 albedo_color = Color(1.5, 0, 0.232, 1)

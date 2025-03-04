@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://040ih2loi7hj"]
 
-[ext_resource type="Shader" path="res://Assets/cotton cloud shader.gdshader" id="1_hhrdy"]
+[ext_resource type="Shader" uid="uid://ca7d8n05as3pn" path="res://Assets/cotton cloud shader.gdshader" id="1_hhrdy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k518m"]
 render_priority = 0
@@ -13,7 +13,7 @@ shader_parameter/upper_transparency = 0.89
 shader_parameter/global_transparency = 0.9
 shader_parameter/time_factor = Vector2(2, 3)
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
-shader_parameter/uv1_offset = null
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/color1 = Color(0.78, 0.91, 0.93, 1)
 shader_parameter/color2 = Color(0.71, 0.89, 0.95, 1)
 

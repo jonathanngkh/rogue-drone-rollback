@@ -29,8 +29,8 @@ var player_id: int = -1
 @export var laser_drain := 0.4
 
 @export var ramp_factor: float = 2.0 # Exponent for the exponential ramp
-@export var max_thrust := 100.0 # Maximum upward force (throttle)
-@export var max_yaw_speed := 10.0 # Maximum rotational speed for yaw
+@export var max_thrust := 50.0 # Maximum upward force (throttle)
+@export var max_yaw_speed := 8.0 # Maximum rotational speed for yaw
 @export var max_pitch_speed := 6.0 # Maximum rotational speed for pitch
 @export var max_roll_speed := 6.0 # Maximum rotational speed for roll
 

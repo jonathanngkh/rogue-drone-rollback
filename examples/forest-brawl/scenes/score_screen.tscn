@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://ojh5xofoserg"]
 
-[ext_resource type="Script" path="res://examples/forest-brawl/scripts/score-screen.gd" id="1_q3k84"]
+[ext_resource type="Script" uid="uid://bb15megl3hb30" path="res://examples/forest-brawl/scripts/score-screen.gd" id="1_q3k84"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qjv80"]
 font_size = 32

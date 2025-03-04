@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cxctq3ewhtbf1"]
 
-[ext_resource type="Script" path="res://cloud_gen.gd" id="1_vx8t4"]
+[ext_resource type="Script" uid="uid://dri115crbu4kl" path="res://cloud_gen.gd" id="1_vx8t4"]
 
 [node name="CloudGenerator" type="Node3D"]
 script = ExtResource("1_vx8t4")

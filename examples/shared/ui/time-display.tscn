@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bpf1jdr255nr0"]
 
-[ext_resource type="Script" path="res://examples/shared/scripts/time-display.gd" id="1_0i26b"]
+[ext_resource type="Script" uid="uid://bfgbj8qpl85ey" path="res://examples/shared/scripts/time-display.gd" id="1_0i26b"]
 
 [node name="Time Display" type="Label"]
 anchors_preset = 15

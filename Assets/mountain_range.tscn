@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://imeexorkq5l8"]
 
-[ext_resource type="Shader" path="res://Assets/mountain background shader.gdshader" id="1_ifmc7"]
+[ext_resource type="Shader" uid="uid://d3begydv4k8h3" path="res://Assets/mountain background shader.gdshader" id="1_ifmc7"]
 [ext_resource type="Texture2D" uid="uid://jqsjfnblcetl" path="res://Assets/aerial_rocks_04_4k.blend/textures/aerial_rocks_04_diff_4k.jpg" id="2_v6m7y"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_157mj"]
@@ -12,13 +12,13 @@ noise = SubResource("FastNoiseLite_157mj")
 render_priority = 1
 shader = ExtResource("1_ifmc7")
 shader_parameter/mountain_distance = 2000.0
+shader_parameter/mountain_texture = ExtResource("2_v6m7y")
+shader_parameter/sand_texture = ExtResource("2_v6m7y")
+shader_parameter/height_map = SubResource("NoiseTexture2D_n1vju")
 shader_parameter/height = 200.0
 shader_parameter/aerial_perspective_color = Color(0.0146731, 0.10369, 0.191762, 1)
 shader_parameter/mountain_uv_scale = Vector2(1, 1)
 shader_parameter/sand_uv_scale = Vector2(1, 1)
-shader_parameter/mountain_texture = ExtResource("2_v6m7y")
-shader_parameter/sand_texture = ExtResource("2_v6m7y")
-shader_parameter/height_map = SubResource("NoiseTexture2D_n1vju")
 
 [sub_resource type="QuadMesh" id="QuadMesh_vuv28"]
 size = Vector2(500, 500)
