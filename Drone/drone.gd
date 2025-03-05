@@ -21,12 +21,14 @@ var player_id: int = -1
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var battery_level: Label = $HUD/BatteryLevel
 @onready var red_indicator: Node3D = $"Pivot/drone edited origins/root/node_id273/RedIndicator"
+@onready var angle_mode_bool: Label = $HUD/AngleMode/AngleModeBool
 
 @export var health := 5
 @export var bullet_speed := 60.0 # Bullet speed
 @export var battery : float = 100.0
 @export var battery_drain_multiplier : float = 0.4
 @export var laser_drain := 0.4
+@export var is_angle_mode : bool = false
 
 @export var ramp_factor: float = 2.0 # Exponent for the exponential ramp
 @export var max_thrust := 50.0 # Maximum upward force (throttle)
@@ -69,6 +71,10 @@ var string_p2 : String = ""
 var respawn_count: int = 0
 
 func _ready() -> void:
+	if is_angle_mode:
+		angle_mode_bool.text = "on"
+	else:
+		angle_mode_bool.text = "off"
 	battery_level.text = str(int(battery))
 	#var vp = get_viewport()
 	#vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
@@ -133,11 +139,20 @@ func _process(delta: float) -> void:
 func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	# Add the gravity.
 	if not is_on_floor():
+		if is_angle_mode:
+			reset_orientation_to_neutral()
 		velocity += get_gravity() * 1.2 * delta
 	else:
 		apply_friction(delta)
 		reset_orientation_to_neutral() # can use this for ez hover
-		
+	
+	# Toggle angle mode
+	if input.toggle_angle_mode:
+		is_angle_mode = !is_angle_mode
+		if is_angle_mode:
+			angle_mode_bool.text = "on"
+		else:
+			angle_mode_bool.text = "off"
 	# drain battery when firing laser
 	if input.is_firing:
 		battery -= laser_drain

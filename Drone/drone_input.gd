@@ -11,6 +11,7 @@ var is_firing : bool
 var is_just_pressed_firing : bool
 var is_just_released_firing : bool
 var is_zooming : bool = false
+var toggle_angle_mode : bool
 
 func _gather() -> void:
 	# Throttle
@@ -29,6 +30,9 @@ func _gather() -> void:
 	
 	# Zoom
 	is_zooming = Input.is_action_pressed("aim_down_sights")
+	
+	# Angle Mode
+	toggle_angle_mode = Input.is_action_just_released("toggle_angle_mode")
 	
 	## Movement
 	#movement = Vector3(
