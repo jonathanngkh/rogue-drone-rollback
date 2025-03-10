@@ -10,9 +10,9 @@ class_name NetworkWeaponHitscan3D
 @onready var crosshair: TextureRect = $"../HUD/Crosshair"
 @onready var hitmarker: TextureRect = $"../HUD/Hitmarker"
 @onready var ray_cast: RayCast3D = $"../Node3D/Camera3D/RayCast3D"
-@onready var identifier_laser_scaler: Node3D = $"../IdentifierLaserScaler"
+@onready var identifier_laser_scaler: Node3D = $"../Node3D/IdentifierLaserScaler"
+@onready var identifier_laser: MeshInstance3D = $"../Node3D/IdentifierLaserScaler/IdentifierLaser"
 
-@onready var identifier_laser: MeshInstance3D = $"../IdentifierLaserScaler/IdentifierLaser"
 @onready var laser: MeshInstance3D = $"../Scaler/Laser"
 #@export var laser_transparency: float = 0.0:
 	#get:

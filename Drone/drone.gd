@@ -16,7 +16,7 @@ var player_id: int = -1
 @onready var ray_cast: RayCast3D = $Node3D/Camera3D/RayCast3D
 @onready var fpv_camera: Camera3D = $Node3D/Camera3D
 @onready var laser: MeshInstance3D = $Scaler/Laser
-@onready var identifier_laser: MeshInstance3D = $IdentifierLaserScaler/IdentifierLaser
+@onready var identifier_laser: MeshInstance3D = $Node3D/IdentifierLaserScaler/IdentifierLaser
 @onready var you_died_overlay: TextureRect = $HUD/YouDied
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var battery_level: Label = $HUD/BatteryLevel
@@ -26,6 +26,8 @@ var player_id: int = -1
 @onready var settings_color_rect: ColorRect = $HUD/SettingsColorRect
 @onready var angle_mode_settings_button: Button = $HUD/SettingsColorRect/AngleMode
 @onready var altitude_mode_settings_button: Button = $HUD/SettingsColorRect/AltitudeMode
+@onready var camera_pivot: Node3D = $Node3D
+@onready var camera_angle_value: Label = $HUD/CameraAngle/CameraAngleValue
 
 
 @export var health := 5
@@ -49,10 +51,13 @@ var player_id: int = -1
 
  # Reduce sensitivity to 50% while zoomed in
 @export var zoom_sensitivity_multiplier: float = 0.3
-@export var default_fov: float = 60.0  # Normal field of view
+@export var default_fov: float = 100.0  # Normal field of view
 @export var zoom_fov: float = 20.0     # Zoomed-in field of view
 @export var zoom_speed: float = 15.0   # How fast the zoom transitions
-var is_zoom : bool = false
+
+@export var default_camera_angle := 20.0
+@export var max_camera_angle := 60.0
+@export var min_camera_angle := -30.0
 
 # Pitch/Volume range for engine whine
 @export var min_pitch := 0.9  # Pitch at zero throttle
@@ -72,6 +77,8 @@ var input_dictionary : Dictionary = {
 var pitch_velocity: float = 0.0
 var yaw_velocity: float = 0.0
 var roll_velocity: float = 0.0
+
+var is_zoom : bool = false
 
 var device_index : int
 var string_p2 : String = ""
@@ -122,6 +129,16 @@ func _process(delta: float) -> void:
 		fpv_camera.fov = lerp(fpv_camera.fov, zoom_fov, zoom_speed * delta)
 	else:
 		fpv_camera.fov = lerp(fpv_camera.fov, default_fov, zoom_speed * delta)
+
+	if Input.is_action_pressed("camera_angle_up"):
+		if camera_pivot.rotation_degrees.x < max_camera_angle:
+			camera_pivot.rotation_degrees.x += 1.0
+			camera_angle_value.text = str(int(camera_pivot.rotation_degrees.x)) + " °"
+			
+	if Input.is_action_pressed("camera_angle_down"):
+		if camera_pivot.rotation_degrees.x > min_camera_angle:
+			camera_pivot.rotation_degrees.x -= 1.0
+			camera_angle_value.text = str(int(camera_pivot.rotation_degrees.x)) + " °"
 	
 	# Update the input dictionary
 	input_dictionary = get_input_dictionary(input.throttle_input, input.yaw_input, input.pitch_input, input.roll_input)
