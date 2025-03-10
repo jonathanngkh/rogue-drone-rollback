@@ -13,25 +13,33 @@ var is_just_released_firing : bool
 var is_zooming : bool = false
 
 func _gather() -> void:
-	# Throttle
-	if _player.is_altitude_assist:
-		throttle_input = Input.get_action_strength("throttle_forward") - Input.get_action_strength("throttle_backward")
+	if not _player.is_out_of_battery:
+		# Throttle
+		if _player.is_altitude_assist:
+			throttle_input = Input.get_action_strength("throttle_forward") - Input.get_action_strength("throttle_backward")
+		else:
+			throttle_input = Input.get_action_strength("throttle_forward")
+		# Pitch
+		pitch_input = Input.get_action_strength("pitch_backward") - Input.get_action_strength("pitch_forward")
+		# Roll
+		roll_input = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
+		# Yaw
+		yaw_input = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+		
+		# Fire
+		is_firing = Input.is_action_pressed("shoot")
+		is_just_pressed_firing = Input.is_action_just_pressed("shoot")
+		is_just_released_firing = Input.is_action_just_released("shoot")
+		
+		# Zoom
+		is_zooming = Input.is_action_pressed("aim_down_sights")
 	else:
-		throttle_input = Input.get_action_strength("throttle_forward")
-	# Pitch
-	pitch_input = Input.get_action_strength("pitch_backward") - Input.get_action_strength("pitch_forward")
-	# Roll
-	roll_input = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
-	# Yaw
-	yaw_input = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
-	
-	# Fire
-	is_firing = Input.is_action_pressed("shoot")
-	is_just_pressed_firing = Input.is_action_just_pressed("shoot")
-	is_just_released_firing = Input.is_action_just_released("shoot")
-	
-	# Zoom
-	is_zooming = Input.is_action_pressed("aim_down_sights")
+		is_firing = false
+		throttle_input = 0
+		yaw_input = 0
+		pitch_input = 0
+		roll_input = 0
+		is_zooming = false
 	
 	## Angle Mode
 	#_player.is_angle_assist = Input.is_action_pressed("toggle_angle_mode")

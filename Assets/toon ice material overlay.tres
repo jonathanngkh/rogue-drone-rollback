@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://cmq4irlwf6wo5"]
 
-[ext_resource type="Shader" path="res://Assets/toon ice shader.gdshader" id="1_hppcs"]
+[ext_resource type="Shader" uid="uid://c0wq1o57i8lbg" path="res://Assets/toon ice shader.gdshader" id="1_hppcs"]
 [ext_resource type="Texture2D" uid="uid://gvd7pjf1mkb0" path="res://Assets/perlin noise.png" id="2_kuoyt"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iubxb"]
@@ -25,11 +25,11 @@ shader_parameter/horizontal_frequency = 0.01
 shader_parameter/vertical_frequency = 2.0
 shader_parameter/size = 4.18
 shader_parameter/banding_bias = 0.67
+shader_parameter/wave_texture = ExtResource("2_kuoyt")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_5lnnb")
 shader_parameter/wave_height = 15.75
 shader_parameter/texture_height = -2.53
 shader_parameter/color1 = Color(0.59, 0.761, 1, 1)
 shader_parameter/color2 = Color(0.274, 0.474, 0.98, 1)
 shader_parameter/color3 = Color(0.059, 0.389, 0.85, 1)
 shader_parameter/color4 = Color(0, 0.267, 1, 1)
-shader_parameter/wave_texture = ExtResource("2_kuoyt")
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_5lnnb")

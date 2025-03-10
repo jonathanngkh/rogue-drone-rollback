@@ -6,7 +6,7 @@
 render_priority = 0
 shader = ExtResource("1_upgjx")
 shader_parameter/hex_size = Vector2(0.05, 0.07)
-shader_parameter/scan_color = Color(2, 0.46, 0.247, 1)
+shader_parameter/scan_color = Color(0.275, 1.5, 0.571, 1)
 shader_parameter/scan_line_size = 0.001
 
 [sub_resource type="SphereMesh" id="SphereMesh_bmkjf"]
@@ -17,6 +17,8 @@ height = 1600.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283327, -0.0444478, -1.25515)
+layers = 33
 material_overlay = SubResource("ShaderMaterial_a7jf6")
 transparency = 1.0
+cast_shadow = 0
 mesh = SubResource("SphereMesh_bmkjf")

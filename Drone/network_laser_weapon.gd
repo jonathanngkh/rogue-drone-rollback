@@ -53,7 +53,10 @@ func fire() -> bool:
 
 ## Check whether this weapon can be fired.
 func can_fire() -> bool:
-	return _weapon.can_fire()
+	if get_parent().is_out_of_battery == false:
+		return true
+	else:
+		return false
 
 func _init() -> void:
 	_weapon = _NetworkWeaponProxy.new()
@@ -195,8 +198,9 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		#laser.get_active_material(0).albedo_color.a = 1.0
 		#identifier_laser.get_active_material(0).albedo_color.a = 1.0
-		laser_sound.play()
-		laser_hum_sound.play()
+		if can_fire():
+			laser_sound.play()
+			laser_hum_sound.play()
 
 	if Input.is_action_just_released("shoot"):
 		laser_sound.stop()

@@ -32,6 +32,8 @@ var player_id: int = -1
 
 @export var health := 5
 @export var bullet_speed := 60.0 # Bullet speed
+@export var is_charging : bool = true
+@export var is_out_of_battery := false
 @export var battery : float = 100.0
 @export var battery_drain_multiplier : float = 0.4
 @export var laser_drain := 0.4
@@ -179,10 +181,19 @@ func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 		altitude_mode_bool.text = "on"
 	else:
 		altitude_mode_bool.text = "off"
+	
+	# charge battery when inside charging area
+	if is_charging:
+		if battery < 99.9:
+			battery += 0.2
+			is_out_of_battery = false
 		
 	# drain battery when firing laser
 	if input.is_firing:
-		battery -= laser_drain
+		if battery > 0:
+			battery -= laser_drain
+		else:
+			is_out_of_battery = true
 	# Start zoom
 	if input.is_zooming:
 		if not is_zoom:
@@ -197,7 +208,7 @@ func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 			max_roll_speed *= 1/zoom_sensitivity_multiplier
 			max_yaw_speed *= 1/zoom_sensitivity_multiplier
 			is_zoom = false
-		
+			
 	# Apply thrust
 	apply_thrust(input.throttle_input, delta)
 	
@@ -341,7 +352,10 @@ func get_input_dictionary(throttle_input: float, yaw_input: float, pitch_input: 
 
 func drain_battery() -> void:
 	# battery drains based on how far sticks are pushed. half value for all except throttle since 4 motors involved.
-	battery -= battery_drain_multiplier * (input_dictionary["pitch"]/2 + input_dictionary["yaw"]/2 + input_dictionary["roll"]/2 + input_dictionary["throttle"])
+	if battery > 0:
+		battery -= battery_drain_multiplier * (input_dictionary["pitch"]/2 + input_dictionary["yaw"]/2 + input_dictionary["roll"]/2 + input_dictionary["throttle"])
+	else:
+		is_out_of_battery = true
 	
 
 func update_engine_sound() -> void:
