@@ -1,7 +1,7 @@
 extends BaseNetInput
 class_name DroneInput
 
-#@onready var _player: Node3D = get_parent()
+@onready var _player: Node3D = get_parent()
 
 var throttle_input : float
 var pitch_input : float
@@ -11,11 +11,13 @@ var is_firing : bool
 var is_just_pressed_firing : bool
 var is_just_released_firing : bool
 var is_zooming : bool = false
-var toggle_angle_mode : bool
 
 func _gather() -> void:
 	# Throttle
-	throttle_input = Input.get_action_strength("throttle_forward")
+	if _player.is_altitude_assist:
+		throttle_input = Input.get_action_strength("throttle_forward") - Input.get_action_strength("throttle_backward")
+	else:
+		throttle_input = Input.get_action_strength("throttle_forward")
 	# Pitch
 	pitch_input = Input.get_action_strength("pitch_backward") - Input.get_action_strength("pitch_forward")
 	# Roll
@@ -31,8 +33,11 @@ func _gather() -> void:
 	# Zoom
 	is_zooming = Input.is_action_pressed("aim_down_sights")
 	
-	# Angle Mode
-	toggle_angle_mode = Input.is_action_just_released("toggle_angle_mode")
+	## Angle Mode
+	#_player.is_angle_assist = Input.is_action_pressed("toggle_angle_mode")
+	#
+	## Altitude Hold Mode
+	#_player.is_altitude_assist = Input.is_action_pressed("toggle_altitude_hold_mode")
 	
 	## Movement
 	#movement = Vector3(

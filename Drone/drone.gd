@@ -22,13 +22,20 @@ var player_id: int = -1
 @onready var battery_level: Label = $HUD/BatteryLevel
 @onready var red_indicator: Node3D = $"Pivot/drone edited origins/root/node_id273/RedIndicator"
 @onready var angle_mode_bool: Label = $HUD/AngleMode/AngleModeBool
+@onready var altitude_mode_bool: Label = $HUD/AltitudeMode/AltitudeModeBool
+@onready var settings_color_rect: ColorRect = $HUD/SettingsColorRect
+@onready var angle_mode_settings_button: Button = $HUD/SettingsColorRect/AngleMode
+@onready var altitude_mode_settings_button: Button = $HUD/SettingsColorRect/AltitudeMode
+
 
 @export var health := 5
 @export var bullet_speed := 60.0 # Bullet speed
 @export var battery : float = 100.0
 @export var battery_drain_multiplier : float = 0.4
 @export var laser_drain := 0.4
-@export var is_angle_mode : bool = false
+@export var is_angle_assist : bool = false
+@export var is_altitude_assist: bool = false
+@export var altitude_assist_force : float = 11.76
 
 @export var ramp_factor: float = 2.0 # Exponent for the exponential ramp
 @export var max_thrust := 50.0 # Maximum upward force (throttle)
@@ -71,10 +78,9 @@ var string_p2 : String = ""
 var respawn_count: int = 0
 
 func _ready() -> void:
-	if is_angle_mode:
-		angle_mode_bool.text = "on"
-	else:
-		angle_mode_bool.text = "off"
+	settings_color_rect.visible = false
+	angle_mode_settings_button.pressed.connect(_toggle_angle_assist)
+	altitude_mode_settings_button.pressed.connect(_toggle_altitude_assist)
 	battery_level.text = str(int(battery))
 	#var vp = get_viewport()
 	#vp.debug_draw = Viewport.DEBUG_DRAW_WIREFRAME
@@ -102,7 +108,8 @@ func _process(delta: float) -> void:
 	# remove Drone #1 if host_only was clicked
 	if name == "Drone #1" and brawler_spawner.spawn_host_avatar == false:
 		queue_free()
-		
+	if Input.is_action_just_pressed("menu"):
+		settings_color_rect.visible = !settings_color_rect.visible
 	$HUD/FPS.text = "FPS: " + str(Engine.get_frames_per_second())
 	if Input.is_action_just_pressed("debug"):
 		print('device index: %s' % device_index)
@@ -139,20 +146,23 @@ func _process(delta: float) -> void:
 func _rollback_tick(delta: float, _tick: float, _is_fresh: bool) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		if is_angle_mode:
+		if is_angle_assist:
 			reset_orientation_to_neutral()
 		velocity += get_gravity() * 1.2 * delta
 	else:
 		apply_friction(delta)
 		reset_orientation_to_neutral() # can use this for ez hover
 	
-	# Toggle angle mode
-	if input.toggle_angle_mode:
-		is_angle_mode = !is_angle_mode
-		if is_angle_mode:
-			angle_mode_bool.text = "on"
-		else:
-			angle_mode_bool.text = "off"
+	if is_angle_assist:
+		angle_mode_bool.text = "on"
+	else:
+		angle_mode_bool.text = "off"
+	
+	if is_altitude_assist:
+		altitude_mode_bool.text = "on"
+	else:
+		altitude_mode_bool.text = "off"
+		
 	# drain battery when firing laser
 	if input.is_firing:
 		battery -= laser_drain
@@ -201,16 +211,27 @@ func apply_exponential_ramp(input_value: float) -> float:
 
 
 func apply_thrust(throttle_input: float, delta: float) -> void:
-	throttle_input = apply_exponential_ramp(throttle_input)
 	# Get the thrust direction (normal to the drone's plane)
-	var thrust_direction := transform.basis.y.normalized() # Local "up" direction relative to the drone
+	# Local "up" direction relative to the drone
+	var thrust_direction := transform.basis.y.normalized()
+	
+	if is_altitude_assist:
+		# deadzone
+		if throttle_input > -0.2 and throttle_input < 0.2:
+			velocity += altitude_assist_force * thrust_direction * delta
+		elif throttle_input >= 0.2:
+			velocity += (altitude_assist_force * thrust_direction * delta) + throttle_input * altitude_assist_force * 2 * thrust_direction * delta
+		elif throttle_input <= -0.2:
+			velocity += Vector3.ZERO * delta
+	else:
+		throttle_input = apply_exponential_ramp(throttle_input)
 
-	# Scale the thrust direction by the input and maximum thrust
-	var thrust_force := thrust_direction * throttle_input * max_thrust
+		# Scale the thrust direction by the input and maximum thrust
+		var thrust_force := thrust_direction * throttle_input * max_thrust
 
-	# Apply thrust directly to velocity, scaled by delta
-	if throttle_input > 0:
-		velocity += thrust_force * delta
+		# Apply thrust directly to velocity, scaled by delta
+		if throttle_input > 0:
+			velocity += thrust_force * delta
 
 	# Introduce drag to counter excessive acceleration
 	apply_drag(delta)
@@ -350,3 +371,19 @@ func _snap_to_spawn() -> void:
 	var spawn : Node3D = spawns[idx]
 	
 	global_transform = spawn.global_transform
+
+func _toggle_angle_assist() -> void:
+	if is_angle_assist:
+		angle_mode_settings_button.text = "Angle Assist :       off"
+		is_angle_assist = false
+	else:
+		angle_mode_settings_button.text = "Angle Assist :       on"
+		is_angle_assist = true
+
+func _toggle_altitude_assist() -> void:
+	if is_altitude_assist:
+		is_altitude_assist = false
+		altitude_mode_settings_button.text = "Altitude Assist :       off"
+	else:
+		is_altitude_assist = true
+		altitude_mode_settings_button.text = "Altitude Assist :       on"
