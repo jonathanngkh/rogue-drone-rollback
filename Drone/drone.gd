@@ -48,7 +48,7 @@ var player_id: int = -1
 @export var max_roll_speed := 6.0 # Maximum rotational speed for roll
 
 @export var friction_coefficient := 10 # Adjust this value to tune the friction intensity
-@export var drag_coefficient := 0.5 # Adjust this value to tune drag intensity
+@export var drag_coefficient := 0.1 # Adjust this value to tune drag intensity
 @export var angular_drag_coefficient := 0.1 # Adjust this to tune angular drag intensity
 
  # Reduce sensitivity to 50% while zoomed in
@@ -266,8 +266,18 @@ func apply_thrust(throttle_input: float, delta: float) -> void:
 
 
 func apply_drag(delta: float) -> void:
-	# Drag reduces velocity proportionally to its current magnitude
-	var drag_force := velocity * drag_coefficient * delta
+	# Adjustable parameters
+	var drag_exponent := 1.2  # Adjust between 1.0 (linear) and 2.0 (quadratic)
+	var max_drag_force := 0.5  # Cap drag at this maximum value
+	
+	# Calculate speed and drag force
+	var speed := velocity.length()
+	var drag_force := velocity.normalized() * drag_coefficient * pow(speed, drag_exponent) * delta
+	
+	# Cap the drag force magnitude
+	var drag_magnitude :float = min(drag_force.length(), max_drag_force)
+	drag_force = drag_force.normalized() * drag_magnitude
+	
 	velocity -= drag_force
 
 

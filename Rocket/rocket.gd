@@ -25,5 +25,5 @@ func explode() -> void:
 	#$ExplosionParticles.restart()
 	if is_alive:
 		is_alive = false
-		#$CSGBox3D.visible = false
+		$CSGBox3D.visible = false
 		$TrailParticles.visible = false
